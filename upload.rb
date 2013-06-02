@@ -5,6 +5,9 @@
 require 'base64'
 require 'cgi'
 require 'openssl'
+require 'digest/sha1'
+
+require 'trollop'
 
 # Selected elements from the Amazon S3 request to sign
 #
@@ -13,27 +16,49 @@ require 'openssl'
 
 # TODO: Calculate the MD5 hash for the file
 
-# Get a filename from the command line
-filename = ARGV[0]
-if filename.nil?
-    puts "Please specify a file to upload\n\n"
-    puts "Usage: #{$0} file"
-    abort
+###############################################################################
+# Step 1: Parse command-line options
+###############################################################################
+
+# Get command-line options as a hash object with Trollop
+# opts[:file] holds the specified file,
+# opts[:bucket] holds the specified bucket, etc.
+opts = Trollop::options do
+    version "S3 Photo Manager 0.0.1 (c) 2013 Christopher Frederick"
+    opt :file, "File to upload", :type => :string
+    opt :bucket, "Amazon S3 bucket", :type => :string
+    opt :path, "Photo path (filename prefix) in the specified bucket", :type => :string
+    opt :aws_secret_key, "Secret key for Amazon Web Services access", :type => :string
 end
 
-# Quit if the filename does not indicate a valid file
-if !File.file?(filename)
-    puts "Could not open #{filename}: either it is not a regular file or it does not exist" 
-    abort
-end
+# --file must be specified
+Trollop::die :file, "must be specified" unless opts[:file]
 
-# Open the file
-file = File.open(filename, "r")
+# --file must indicate a valid file
+Trollop::die :file, "must be a valid file" unless File.exists?(opts[:file])
 
-# Determine the file's MIME type by reading its magic header
+# --bucket must be specified
+Trollop::die :bucket, "must be specified" unless opts[:bucket]
+
+# --path must be specified
+Trollop::die :path, "must be specified" unless opts[:path]
+
+# --aws-secret-key must be specified
+Trollop::die :aws_secret_key, "must be specified" unless opts[:aws_secret_key]
+
+# DEBUG: Print the opts hash
+p opts
+
+###############################################################################
+# Step 2: Examine the file to upload
+###############################################################################
+
+# Open the file & determine its MIME type by reading its magic header
 # For more information, see
 # http://www.garykessler.net/library/file_sigs.html
-#
+filename = opts[:file]
+file = File.open(filename, "rb")
+
 # I'm currently checking for the following two magic headers:
 # FF D8 FF E0 xx xx 4A 46 49 46 00 - JPEG/JFIF graphics file
 # FF D8 FF E1 xx xx 45 78 69 66 00 - Digital camera JPG using EXIF
@@ -52,7 +77,10 @@ if file_type.empty?
     abort
 end
 
-# Get the current time
+###############################################################################
+# Step 3: Get the current time
+###############################################################################
+
 # %a - Abbreviated weekday name ("Sun")
 # %d - Day of the month, zero-padded (01..31)
 # %b - Abbreviated month name ("Jan")
@@ -64,28 +92,40 @@ end
 # Example: Sun, 01 Jan 2001 00:00:00 +0900
 time_string = Time.now.strftime("%a, %d %b %Y %H:%M:%S %z")
 
-# Set the string to sign with your AWS secret access key
-string_to_sign = "PUT
+# Calculate the file's SHA-1 hash
+file_size = file.size
+file_contents = file.read
+sha1_hash = Digest::SHA1.hexdigest "blob #{file_size}\0#{file_contents}"
 
+# Calculate the file's MD5 hash
+md5_hash = Digest::MD5.base64digest file_contents
+
+###############################################################################
+# Step 4: Set the string to sign with your AWS secret access key
+###############################################################################
+
+bucket_name = opts[:bucket]
+folder_name = opts[:path]
+  file_name = sha1_hash
+string_to_sign = "PUT
+#{md5_hash}
 #{file_type}
 #{time_string}
-/bucket/path/photo.jpg"
+/#{bucket_name}/#{folder_name}/#{file_name}"
 
+# DEBUG: Print the string to sign
 puts "DEBUG: The string to sign is:\n\n"
 puts "-------------------------------\n#{string_to_sign}\n-------------------------------\n\n"
 
-# Your AWS secret access key
-# PLEASE DON'T COMMIT THIS IN YOUR REPOSITORY!
+# Get the AWS secret access key
+secret_access_key = opts[:aws_secret_key]
 
-# TODO: Get the access key from the command-line or environment variable
-
-secret_access_key = ''
-
-# The Base64-encoded SHA-1 HMAC signature calculated from
-# string_to_sign and your AWS secret access key
+# Calculate a Base64-encoded SHA-1 HMAC signature from
+# string_to_sign and secret_access_key
 
 hmac_signature = CGI.escape( Base64.encode64( "#{OpenSSL::HMAC.digest( 'sha1', secret_access_key, string_to_sign)}\n") )
 
+# DEBUG: Print the HMAC signature
 puts "DEBUG: The HMAC signature is #{hmac_signature}\n"
 
 # Close the file
