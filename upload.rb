@@ -14,8 +14,6 @@ require 'trollop'
 # For more information, see
 # http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html
 
-# TODO: Calculate the MD5 hash for the file
-
 ###############################################################################
 # Step 1: Parse command-line options
 ###############################################################################
