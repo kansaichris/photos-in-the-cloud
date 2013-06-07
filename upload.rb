@@ -127,7 +127,8 @@ secret_access_key = opts[:aws_secret_key]
 # Calculate a Base64-encoded SHA-1 HMAC signature from
 # string_to_sign and secret_access_key
 
-hmac_signature = CGI.escape( Base64.encode64( "#{OpenSSL::HMAC.digest( 'sha1', secret_access_key, string_to_sign)}\n") )
+hmac_digest = OpenSSL::HMAC.digest('sha1', secret_access_key, string_to_sign)
+hmac_signature = Base64.encode64(hmac_digest)
 
 # DEBUG: Print the HMAC signature
 puts "DEBUG: The HMAC signature is #{hmac_signature}\n"
