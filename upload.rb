@@ -28,7 +28,8 @@ opts = Trollop::options do
     opt :file, "File to upload", :type => :string
     opt :bucket, "Amazon S3 bucket", :type => :string
     opt :path, "Photo path (filename prefix) in the specified bucket", :type => :string
-    opt :aws_secret_key, "Secret key for Amazon Web Services access", :type => :string
+    opt :aws_key_id, "Access key ID for Amazon Web Services", :type => :string
+    opt :aws_secret_key, "Secret access key for Amazon Web Services", :type => :string
 end
 
 # --file must be specified
@@ -42,6 +43,9 @@ Trollop::die :bucket, "must be specified" unless opts[:bucket]
 
 # --path must be specified
 Trollop::die :path, "must be specified" unless opts[:path]
+
+# --aws-key-id must be specified
+Trollop::die :aws_key_id, "must be specified" unless opts[:aws_key_id]
 
 # --aws-secret-key must be specified
 Trollop::die :aws_secret_key, "must be specified" unless opts[:aws_secret_key]
