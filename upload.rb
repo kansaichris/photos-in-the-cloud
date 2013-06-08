@@ -192,6 +192,18 @@ puts "-------------------------------\n#{string_to_sign}\n----------------------
 # Get the AWS secret access key
 secret_access_key = opts[:aws_secret_key]
 
+my_bucket = Bucket.new(opts[:bucket], opts[:region])
+files = my_bucket.get_files_for_key(opts[:aws_key_id], opts[:aws_secret_key])
+
+unless files.empty?
+    puts "Received the following filenames:"
+    count = 0
+    files.each do |filename|
+        count = count + 1
+        puts "#{count}: #{filename}"
+    end
+end
+
 # Calculate a Base64-encoded SHA-1 HMAC signature from
 # string_to_sign and secret_access_key
 
