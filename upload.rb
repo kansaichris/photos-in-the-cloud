@@ -185,11 +185,25 @@ string_to_sign = "PUT
 /#{bucket_name}/#{folder_name}/#{file_name}"
 =end
 
+=begin
+string2 = "GET
 
 
+Tue, 27 Mar 2007 19:36:42 +0000
+/johnsmith/photos/puppy.jpg".force_encoding("UTF-8")
 
+puts "DEBUG: Sample string to sign is:\n\n"
+puts "-------------------------------\n#{string2}\n-------------------------------\n\n"
 
+key2 = 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY'
+digest2 = OpenSSL::HMAC.digest( 'sha1', key2, string2)
+digest3 = OpenSSL::HMAC.digest( 'sha1', string2, key2)
+signature2 = Base64.encode64(digest2)
+signature3 = Base64.encode64(digest3)
 
+puts "DEBUG: The calculated signature is #{signature2}\n"
+puts "DEBUG: The calculated signature is #{signature3}\n"
+=end
 
 # Close the file
 file.close
