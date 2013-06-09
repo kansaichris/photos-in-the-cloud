@@ -98,11 +98,7 @@ end
 # For more information, see
 # http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html
 
-###############################################################################
-# Step 1: Parse command-line options
-###############################################################################
-
-# Get command-line options as a hash object with Trollop
+# Get command-line options as a hash object with Trollop #######################
 # opts[:file] holds the specified file,
 # opts[:bucket] holds the specified bucket, etc.
 opts = Trollop::options do
@@ -127,14 +123,9 @@ opts = Trollop::options do
         :type => :string, :required => true
 end
 
-# DEBUG: Print the opts hash
-p opts
 
-###############################################################################
-# Step 2: Examine the file to upload
-###############################################################################
 
-# Open the file & determine its MIME type by reading its magic header
+# Open the file & determine its MIME type by reading its magic header ##########
 # For more information, see
 # http://www.garykessler.net/library/file_sigs.html
 filename = opts[:file]
@@ -158,48 +149,24 @@ if file_type.empty?
     abort
 end
 
-###############################################################################
-# Step 3: Get the current time
-###############################################################################
-
-# %a - Abbreviated weekday name ("Sun")
-# %d - Day of the month, zero-padded (01..31)
-# %b - Abbreviated month name ("Jan")
-# %Y - Year with century (can be negative, 4 digits at least)
-# %H - Hour of the day, 24-hour clock, zero-padded (00..23)
-# %M - Minute of the hour (00..59)
-# %S - Second of the minute (00..60)
-# %z - Time zone as hour and minute offset from UTC (e.g. +0900)
-# Example: Sun, 01 Jan 2001 00:00:00 +0900
-time_string = Time.now.strftime("%a, %d %b %Y %H:%M:%S %z")
-
-# Calculate the file's SHA-1 hash
+# Calculate the file's SHA-1 hash ##############################################
 file_size = file.size
 file_contents = file.read
 sha1_hash = Digest::SHA1.hexdigest "blob #{file_size}\0#{file_contents}"
 
-# Calculate the file's MD5 hash
+# Calculate the file's MD5 hash ################################################
 md5_hash = Digest::MD5.base64digest file_contents
 
-###############################################################################
-# Step 4: Set the string to sign with your AWS secret access key
-###############################################################################
-
-bucket_name = opts[:bucket]
-folder_name = opts[:path]
-  file_name = sha1_hash
+=begin
+file_name = sha1_hash
 string_to_sign = "PUT
 #{md5_hash}
 #{file_type}
 #{time_string}
 /#{bucket_name}/#{folder_name}/#{file_name}"
+=end
 
-# DEBUG: Print the string to sign
-puts "DEBUG: The string to sign is:\n\n"
-puts "-------------------------------\n#{string_to_sign}\n-------------------------------\n\n"
 
-# Get the AWS secret access key
-secret_access_key = opts[:aws_secret_key]
 
 my_bucket = Bucket.new(opts[:bucket], opts[:region])
 files = my_bucket.get_files_for_key(opts[:aws_key_id], opts[:aws_secret_key])
@@ -213,14 +180,8 @@ unless files.empty?
     end
 end
 
-# Calculate a Base64-encoded SHA-1 HMAC signature from
-# string_to_sign and secret_access_key
 
-hmac_digest = OpenSSL::HMAC.digest('sha1', secret_access_key, string_to_sign)
-hmac_signature = Base64.encode64(hmac_digest)
 
-# DEBUG: Print the HMAC signature
-puts "DEBUG: The HMAC signature is #{hmac_signature}\n"
 
 # Close the file
 file.close
