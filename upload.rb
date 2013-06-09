@@ -123,7 +123,17 @@ opts = Trollop::options do
         :type => :string, :required => true
 end
 
+my_bucket = Bucket.new(opts[:bucket], opts[:region])
+files = my_bucket.get_files_for_key(opts[:aws_key_id], opts[:aws_secret_key])
 
+unless files.empty?
+    puts "Received the following filenames:"
+    count = 0
+    files.each do |filename|
+        count = count + 1
+        puts "#{count}: #{filename}"
+    end
+end
 
 # Open the file & determine its MIME type by reading its magic header ##########
 # For more information, see
@@ -168,17 +178,7 @@ string_to_sign = "PUT
 
 
 
-my_bucket = Bucket.new(opts[:bucket], opts[:region])
-files = my_bucket.get_files_for_key(opts[:aws_key_id], opts[:aws_secret_key])
 
-unless files.empty?
-    puts "Received the following filenames:"
-    count = 0
-    files.each do |filename|
-        count = count + 1
-        puts "#{count}: #{filename}"
-    end
-end
 
 
 
