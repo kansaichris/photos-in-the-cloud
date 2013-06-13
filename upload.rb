@@ -17,7 +17,6 @@ require 'nokogiri'
 
 class PUTObject
     def initialize(filename, bucket_name, region, path, date, id, key)
-        @file_name = filename
         @file_size = File.size(filename)
         @file_contents = File.read(filename, @file_size)
         @md5_hash = Digest::MD5.base64digest @file_contents
