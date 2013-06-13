@@ -78,7 +78,6 @@ class PUTObject
     def string_to_sign
         string  = "PUT\n"
         string << "#{@md5_hash}\n"
-        # string << "\n"
         string << "#{@file_type}\n"
         string << "#{@date}\n"
         # string << amz_headers
