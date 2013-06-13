@@ -196,7 +196,46 @@ opts = Trollop::options do
     opt :aws_secret_key, "Secret access key for Amazon Web Services",
         :type => :string, :required => true
 end
+################################################################################
 
+put_request = PUTObject.new(opts[:file], opts[:bucket], opts[:region], opts[:path], current_time, opts[:aws_key_id], opts[:aws_secret_key])
+puts "DEBUG: String to sign:"
+puts "----------------------"
+puts put_request.string_to_sign
+puts "----------------------"
+puts
+put_request.print_headers
+puts
+
+hash = Digest::MD5.base64digest put_request.body
+puts "MD5 hash of request body: #{hash}"
+puts "Class of request body: #{put_request.body.class.name}"
+puts "Encoding of request body: #{put_request.body.encoding.name}"
+puts "Number of bytes in request body: #{put_request.body.bytesize}"
+puts "First character in request body: #{put_request.body.getbyte(4)}"
+# IO.write("image.jpg", put_request.body.force_encoding("UTF-8"))
+
+host_name = "#{opts[:bucket]}.#{opts[:region]}.amazonaws.com"
+uri = URI.parse("http://#{host_name}/")
+http = Net::HTTP.new(uri.host, uri.port)
+# TIP: Try uncommenting the following line to debug issues!
+# http.set_debug_output($stdout)
+
+response = http.request(put_request)
+
+puts "Response code: #{response.code}"
+puts "Response message: #{response.message}"
+puts "Response class: #{response.class.name}"
+
+puts
+puts "DEBUG: HTTP headers in the response:"
+puts "------------------------------------"
+response.each do |key,value|
+    puts "#{key} = #{value}"
+end
+puts "------------------------------------"
+puts
+puts response.body
 my_bucket = Bucket.new(opts[:bucket], opts[:region])
 files = my_bucket.get_files_for_key(opts[:aws_key_id], opts[:aws_secret_key])
 
@@ -240,7 +279,6 @@ sha1_hash = Digest::SHA1.hexdigest "blob #{file_size}\0#{file_contents}"
 
 # Calculate the file's MD5 hash ################################################
 md5_hash = Digest::MD5.base64digest file_contents
-
 =begin
 file_name = sha1_hash
 string_to_sign = "PUT
@@ -271,4 +309,3 @@ puts "DEBUG: The calculated signature is #{signature3}\n"
 =end
 
 # Close the file
-file.close
