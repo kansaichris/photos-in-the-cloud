@@ -17,14 +17,32 @@ require 'nokogiri'
 
 class PUTObject
     def initialize(filename, bucket_name, region, path, date, id, key)
-        @file_size = File.size(filename)
+        # These variables are used to calculate the authentication header:
+        # - @md5_hash
+        # - @file_type
+        # - @date
+        # - @bucket_name
+        # - @file_path
+
+        # These variables are used in the other request headers:
+        # - @md5_hash  ('Content-MD5')
+        # - @file_type ('Content-Type')
+        # - @file_size ('Content-Length')
+        # - @date      ('Date')
+
+        # File-related variables
         @file_contents = File.read(filename, @file_size)
-        @md5_hash = Digest::MD5.base64digest @file_contents
-        @file_type = get_type filename
-        @date = date
-        @bucket_name = bucket_name
-        @file_path = path + "/" + filename
-        @host_name = "#{@bucket_name}.#{region}.amazonaws.com"
+        @file_size     = File.size(filename)
+        @file_type     = get_type filename
+        @md5_hash      = Digest::MD5.base64digest @file_contents
+
+        # Amazon S3-related variables
+        @bucket_name   = bucket_name
+        @file_path     = path + "/" + filename
+        @host_name     = "#{@bucket_name}.#{region}.amazonaws.com"
+
+        # Time-related variables
+        @date          = date
 
         init_headers_with_key id, key
 
