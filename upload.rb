@@ -96,6 +96,10 @@ class PUTObject
     end
 
     def string_to_sign
+        # Selected elements from the Amazon S3 request to sign
+        #
+        # For more information, see
+        # http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html
         string  = "PUT\n"
         string << "#{@md5_hash}\n"
         string << "#{@file_type}\n"
@@ -108,11 +112,6 @@ end
 ###############################################################################
 # MAIN
 ###############################################################################
-
-# Selected elements from the Amazon S3 request to sign
-#
-# For more information, see
-# http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html
 
 opts = process_options
 
