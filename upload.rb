@@ -42,6 +42,15 @@ class PUTObject
         @headers['Authorization']  = auth_header(id, key, string_to_sign)
     end
 
+    def print_headers
+        puts "DEBUG: Printing HTTP headers in the PUT OBJECT request:"
+        puts "-------------------------------------------------------"
+        @headers.each do |key,value|
+            puts "#{key} = #{value}"
+        end
+        puts "-------------------------------------------------------"
+    end
+
     def get_response_for_key id, key
         uri = URI.parse("http://#{@host_name}/")
         http = Net::HTTP.new(uri.host, uri.port)
@@ -75,15 +84,6 @@ class PUTObject
         string << "#{@date}\n"
         # string << amz_headers
         string << "/#{@bucket_name}/#{@file_path}"
-    end
-
-    def print_headers
-        puts "DEBUG: Printing HTTP headers in the PUT OBJECT request:"
-        puts "-------------------------------------------------------"
-        self.each do |key,value|
-            puts "#{key} = #{value}"
-        end
-        puts "-------------------------------------------------------"
     end
 end
 
