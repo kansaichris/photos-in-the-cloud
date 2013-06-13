@@ -15,11 +15,12 @@ require 'nokogiri'
 # Classes
 ###############################################################################
 
-class PUTObject < Net::HTTP::Put
+class PUTObject
     def initialize(filename, bucket_name, region, path, date, id, key)
+        @file_name = filename
         @file_size = File.size(filename)
-        file_contents = File.read(filename, @file_size)
-        @md5_hash = Digest::MD5.base64digest file_contents
+        @file_contents = File.read(filename, @file_size)
+        @md5_hash = Digest::MD5.base64digest @file_contents
         # @file_type = get_type filename
         @file_type = 'text/plain'
         @date = date
@@ -27,10 +28,21 @@ class PUTObject < Net::HTTP::Put
         @file_path = path + "/" + filename
         @host_name = "#{@bucket_name}.#{region}.amazonaws.com"
 
-        super "/" + @file_path
+        @body = @file_contents.force_encoding("BINARY")
+    end
 
-        self.body = file_contents.force_encoding("BINARY")
-        self.init_headers(id, key)
+    def get_response_for_key id, key
+        uri = URI.parse("http://#{@host_name}/")
+        http = Net::HTTP.new(uri.host, uri.port)
+        # TIP: Try uncommenting the following line to debug issues!
+        # http.set_debug_output($stdout)
+
+        response = http.send_request('PUT', "/" + @file_path, @file_contents,
+                                     { 'Content-MD5'    => @md5_hash,
+                                       'Content-Type'   => @file_type,
+                                       'Content-Length' => @file_size.to_s,
+                                       'Date'           => @date,
+                                       'Authorization'  => auth_header(id, key, self.string_to_sign) } )
     end
 
     def get_type filename
@@ -50,24 +62,12 @@ class PUTObject < Net::HTTP::Put
 
     def string_to_sign
         string  = "PUT\n"
-        # string << "#{@md5_hash}\n"
-        string << "\n"
+        string << "#{@md5_hash}\n"
+        # string << "\n"
         string << "#{@file_type}\n"
         string << "#{@date}\n"
         # string << amz_headers
         string << "/#{@bucket_name}/#{@file_path}"
-    end
-
-    def init_headers id, key
-        self.delete 'Accept'
-        self.delete 'User-Agent'
-        # self['Content-MD5'] = @md5_hash
-        self['Content-Type'] = @file_type
-        self['Content-Length'] = @file_size
-        self['Connection'] = 'close'
-        self['Host'] = @host_name
-        self['Date'] = @date
-        self['Authorization'] = auth_header(id, key, self.string_to_sign)
     end
 
     def print_headers
@@ -174,9 +174,7 @@ puts "----------------------"
 puts put_request.string_to_sign
 puts "----------------------"
 puts
-put_request.print_headers
-puts
-
+=begin
 hash = Digest::MD5.base64digest put_request.body
 puts "MD5 hash of request body: #{hash}"
 puts "Class of request body: #{put_request.body.class.name}"
@@ -184,14 +182,10 @@ puts "Encoding of request body: #{put_request.body.encoding.name}"
 puts "Number of bytes in request body: #{put_request.body.bytesize}"
 puts "First character in request body: #{put_request.body.getbyte(4)}"
 # IO.write("image.jpg", put_request.body.force_encoding("UTF-8"))
+=end
 
-host_name = "#{opts[:bucket]}.#{opts[:region]}.amazonaws.com"
-uri = URI.parse("http://#{host_name}/")
-http = Net::HTTP.new(uri.host, uri.port)
-# TIP: Try uncommenting the following line to debug issues!
-# http.set_debug_output($stdout)
-
-response = http.request(put_request)
+response = put_request.get_response_for_key opts[:aws_key_id], opts[:aws_secret_key]
+# response = http.request(put_request)
 
 puts "Response code: #{response.code}"
 puts "Response message: #{response.message}"
@@ -206,9 +200,24 @@ end
 puts "------------------------------------"
 puts
 puts response.body
+=begin
+puts "DEBUG: Keys in the response:"
+puts "----------------------------"
+xml_reader = Nokogiri::XML::Reader(response.body)
+xml_reader.each do |node|
+    #if node.name == "Key"
+        puts node.inner_xml
+    #end
+end
+puts "----------------------------"
+puts
+=end
+=begin
+# Get a list of the files in the specified bucket
 my_bucket = Bucket.new(opts[:bucket], opts[:region])
 files = my_bucket.get_files_for_key(opts[:aws_key_id], opts[:aws_secret_key])
 
+# Print all of the filenames
 unless files.empty?
     puts "Received the following filenames:"
     count = 0
@@ -249,6 +258,7 @@ sha1_hash = Digest::SHA1.hexdigest "blob #{file_size}\0#{file_contents}"
 
 # Calculate the file's MD5 hash ################################################
 md5_hash = Digest::MD5.base64digest file_contents
+=end
 =begin
 file_name = sha1_hash
 string_to_sign = "PUT
@@ -279,3 +289,4 @@ puts "DEBUG: The calculated signature is #{signature3}\n"
 =end
 
 # Close the file
+# file.close
