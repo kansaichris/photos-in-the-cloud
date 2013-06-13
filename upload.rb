@@ -45,8 +45,6 @@ class PUTObject
         @date          = date
 
         init_headers_with_key id, key
-
-        @body = @file_contents.force_encoding("BINARY")
     end
 
     def init_headers_with_key id, key
