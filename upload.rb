@@ -28,7 +28,18 @@ class PUTObject
         @file_path = path + "/" + filename
         @host_name = "#{@bucket_name}.#{region}.amazonaws.com"
 
+        init_headers_with_key id, key
+
         @body = @file_contents.force_encoding("BINARY")
+    end
+
+    def init_headers_with_key id, key
+        @headers = Hash.new
+        @headers['Content-MD5']    = @md5_hash
+        @headers['Content-Type']   = @file_type
+        @headers['Content-Length'] = @file_size.to_s
+        @headers['Date']           = @date
+        @headers['Authorization']  = auth_header(id, key, string_to_sign)
     end
 
     def get_response_for_key id, key
@@ -38,11 +49,7 @@ class PUTObject
         # http.set_debug_output($stdout)
 
         response = http.send_request('PUT', "/" + @file_path, @file_contents,
-                                     { 'Content-MD5'    => @md5_hash,
-                                       'Content-Type'   => @file_type,
-                                       'Content-Length' => @file_size.to_s,
-                                       'Date'           => @date,
-                                       'Authorization'  => auth_header(id, key, self.string_to_sign) } )
+                                     @headers)
     end
 
     def get_type filename
