@@ -6,7 +6,6 @@ require_relative 'utility'
 require_relative 'options'
 require_relative 'putobject'
 
-require 'cgi'
 require 'digest/sha1'
 require 'nokogiri'
 
