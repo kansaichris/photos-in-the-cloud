@@ -102,59 +102,6 @@ class PUTObject
     end
 end
 
-class Bucket
-
-    def initialize(name, region="s3")
-        @name = name
-        @region = region
-    end
-
-    def get_files_for_key(id, key)
-        time = current_time()
-        string_to_sign = <<-EOL
-GET
-
-
-#{time}
-/#{@name}/
-        EOL
-        # Remove trailing whitespace
-        string_to_sign.rstrip!
-        host_name = "#{@name}.#{@region}.amazonaws.com"
-        uri = URI.parse("http://#{host_name}/")
-        http = Net::HTTP.new(uri.host, uri.port)
-        # NOTE: I don't think that the following are necessary at this time
-        # http.use_ssl = true
-        # http.verify_mode = ?
-        # TIP: Try uncommenting the following line to debug issues!
-        # http.set_debug_output($stdout)
-        request_files = Net::HTTP::Get.new(uri.request_uri)
-        request_files.delete 'Accept'
-        request_files.delete 'User-Agent'
-        request_files.add_field 'Host', host_name
-        request_files.add_field 'Date', time
-        request_files.add_field 'Authorization', auth_header(id, key, string_to_sign)
-        # NOTE: The following may be cleaner syntax...
-        # request['Authorization'] = auth_header(id, key, string_to_sign)
-        response = http.request(request_files)
-
-        nodes = Array.new
-        xml_reader = Nokogiri::XML::Reader(response.body)
-        xml_reader.each do |node|
-            if node.name == "Key"
-                nodes << node.inner_xml
-            end
-        end
-        nodes
-    end
-
-    # TODO:
-    # - Method to put a file
-    # - Method to Zlib-compress a file
-
-    attr_reader :name
-end
-
 ###############################################################################
 # MAIN
 ###############################################################################
