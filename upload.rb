@@ -51,7 +51,7 @@ class PUTObject
         puts "-------------------------------------------------------"
     end
 
-    def get_response_for_key id, key
+    def get_response
         uri = URI.parse("http://#{@host_name}/")
         http = Net::HTTP.new(uri.host, uri.port)
         # TIP: Try uncommenting the following line to debug issues!
@@ -190,7 +190,7 @@ puts "First character in request body: #{put_request.body.getbyte(4)}"
 # IO.write("image.jpg", put_request.body.force_encoding("UTF-8"))
 =end
 
-response = put_request.get_response_for_key opts[:aws_key_id], opts[:aws_secret_key]
+response = put_request.get_response
 # response = http.request(put_request)
 
 puts "Response code: #{response.code}"
