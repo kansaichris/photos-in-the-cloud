@@ -45,6 +45,71 @@ end
 # Classes
 ###############################################################################
 
+class PUTObject < Net::HTTP::Put
+    def initialize(filename, bucket_name, region, path, date, id, key)
+        @file_size = File.size(filename)
+        file_contents = File.read(filename, @file_size)
+        @md5_hash = Digest::MD5.base64digest file_contents
+        # @file_type = get_type filename
+        @file_type = 'text/plain'
+        @date = date
+        @bucket_name = bucket_name
+        @file_path = path + "/" + filename
+        @host_name = "#{@bucket_name}.#{region}.amazonaws.com"
+
+        super "/" + @file_path
+
+        self.body = file_contents.force_encoding("BINARY")
+        self.init_headers(id, key)
+    end
+
+    def get_type filename
+        # I'm currently checking for the following two magic headers:
+        # FF D8 FF E0 xx xx 4A 46 49 46 00 - JPEG/JFIF graphics file
+        # FF D8 FF E1 xx xx 45 78 69 66 00 - Digital camera JPG using EXIF
+        type = ''
+        jpg_regexp = Regexp.new("\xff\xd8\xff(\xe0|\xe1).{2}JFIF".force_encoding("binary"))
+        case IO.read(filename, 10)
+        when /^#{jpg_regexp}/
+            type = 'image/jpeg'
+        else
+            type = 'binary/octet-stream'
+        end
+        type
+    end
+
+    def string_to_sign
+        string  = "PUT\n"
+        # string << "#{@md5_hash}\n"
+        string << "\n"
+        string << "#{@file_type}\n"
+        string << "#{@date}\n"
+        # string << amz_headers
+        string << "/#{@bucket_name}/#{@file_path}"
+    end
+
+    def init_headers id, key
+        self.delete 'Accept'
+        self.delete 'User-Agent'
+        # self['Content-MD5'] = @md5_hash
+        self['Content-Type'] = @file_type
+        self['Content-Length'] = @file_size
+        self['Connection'] = 'close'
+        self['Host'] = @host_name
+        self['Date'] = @date
+        self['Authorization'] = auth_header(id, key, self.string_to_sign)
+    end
+
+    def print_headers
+        puts "DEBUG: Printing HTTP headers in the PUT OBJECT request:"
+        puts "-------------------------------------------------------"
+        self.each do |key,value|
+            puts "#{key} = #{value}"
+        end
+        puts "-------------------------------------------------------"
+    end
+end
+
 class Bucket
 
     def initialize(name, region="s3")
