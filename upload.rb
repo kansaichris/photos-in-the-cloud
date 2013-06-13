@@ -77,10 +77,13 @@ class PUTObject
         http.send_request('PUT', "/" + @file_path, @file_contents, @headers)
     end
 
+    # Open a file & determine its MIME type by reading its magic header
     def get_type filename
         # I'm currently checking for the following two magic headers:
         # FF D8 FF E0 xx xx 4A 46 49 46 00 - JPEG/JFIF graphics file
         # FF D8 FF E1 xx xx 45 78 69 66 00 - Digital camera JPG using EXIF
+        # For more information, see
+        # http://www.garykessler.net/library/file_sigs.html
         type = ''
         jpg_regexp = Regexp.new("\xff\xd8\xff(\xe0|\xe1).{2}JFIF".force_encoding("binary"))
         case IO.read(filename, 10)
