@@ -21,8 +21,7 @@ class PUTObject
         @file_size = File.size(filename)
         @file_contents = File.read(filename, @file_size)
         @md5_hash = Digest::MD5.base64digest @file_contents
-        # @file_type = get_type filename
-        @file_type = 'text/plain'
+        @file_type = get_type filename
         @date = date
         @bucket_name = bucket_name
         @file_path = path + "/" + filename
