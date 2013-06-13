@@ -68,6 +68,9 @@ class PUTObject
     def get_response
         uri = URI.parse("http://#{@host_name}/")
         http = Net::HTTP.new(uri.host, uri.port)
+        # NOTE: I may want to use the following options at some point...
+        # http.use_ssl = true
+        # http.verify_mode = ?
         # TIP: Try uncommenting the following line to debug issues!
         # http.set_debug_output($stdout)
 
