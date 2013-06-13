@@ -57,8 +57,7 @@ class PUTObject
         # TIP: Try uncommenting the following line to debug issues!
         # http.set_debug_output($stdout)
 
-        response = http.send_request('PUT', "/" + @file_path, @file_contents,
-                                     @headers)
+        http.send_request('PUT', "/" + @file_path, @file_contents, @headers)
     end
 
     def get_type filename
