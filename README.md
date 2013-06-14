@@ -1,11 +1,11 @@
 # Amazon S3 Photo Management Tools
 
 1. [Overview](#overview)
-2. [Current Features](#current)
-3. [Planned Features](#planned)
+2. [Current Features](#current-features-version-010)
+3. [Planned Features](#planned-features)
 4. [FAQ](#faq)
 
-## <a id="overview">Overview</a>
+## Overview
 
 I started this project as a simple Ruby script to upload files to Amazon Simple Storage Service (S3) because I wanted a transparent way to manage a photo collection backed by cloud storage. There are a number of popular photo-sharing websites on the Internet today, but I'm primarily interested in streamlined photo *storage* that allows you to
 
@@ -17,15 +17,15 @@ I started this project as a simple Ruby script to upload files to Amazon Simple 
 
 I haven't found a program or service with all of these features, so I decided to try to write my own. Progress may be slow as this is still just a hobby project for me, but in the meantime I hope that someone else will find it to be useful, either as a tool or as a reference point for learning how to use the Amazon S3 REST API with Ruby.
 
-## <a id="current">Current Features (version 0.1.0)</a>
+## Current Features (version 0.1.0)
 
 - Upload individual photos named with SHA-1 hashes (like Git)
 
-## <a id="planned">Planned Features</a>
+## Planned Features
 
 See [TODO.md](TODO.md).
 
-## <a id="faq">FAQ</a>
+## FAQ
 
 ### 1. Why Ruby?
 
