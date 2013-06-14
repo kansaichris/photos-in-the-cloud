@@ -2,7 +2,6 @@
 
 ## Basic Operations
 
-- Name each file with its SHA-1 hash (like Git)
 - Recursively upload all photos in a directory
 - Download photos by size, date, and metadata
 - Sync "smart directories"
