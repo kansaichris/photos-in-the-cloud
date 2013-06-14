@@ -20,10 +20,11 @@ class PUTObject
         @file_size     = File.size(filename)
         @file_type     = get_type filename
         @md5_hash      = Digest::MD5.base64digest @file_contents
+        sha1_hash      = Digest::SHA1.hexdigest @file_contents
 
         # Amazon S3-related variables
         @bucket_name   = bucket_name
-        @file_path     = path + "/" + filename
+        @file_path     = path + "/" + sha1_hash[0..1] + "/" + sha1_hash[2..-1]
         @host_name     = "#{@bucket_name}.#{region}.amazonaws.com"
 
         # Time-related variables
