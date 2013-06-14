@@ -7,6 +7,15 @@ def process_options
     Trollop::options do
         version "Amazon S3 Photo Uploader 0.1.0 (c) 2013 Christopher Frederick"
 
+        banner <<-EOS
+This program uploads a file to an Amazon S3 bucket.
+
+Usage:
+    upload.rb [options]
+
+Options:
+        EOS
+
         opt :file, "File to upload",
             :type => :string, :required => true
 
