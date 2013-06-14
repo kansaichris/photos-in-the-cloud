@@ -4,7 +4,7 @@ require 'trollop'
 # opts[:file] holds the specified file,
 # opts[:bucket] holds the specified bucket, etc.
 def process_options
-    Trollop::options do
+    parser = Trollop::Parser.new do
         version "Amazon S3 Photo Uploader 0.1.0 (c) 2013 Christopher Frederick"
 
         banner <<-EOS
@@ -33,5 +33,10 @@ Options:
 
         opt :aws_secret_key, "Secret access key for Amazon Web Services",
             :type => :string, :required => true
+    end
+
+    Trollop::with_standard_exception_handling parser do
+        raise Trollop::HelpNeeded if ARGV.empty? # show help
+        parser.parse ARGV
     end
 end
