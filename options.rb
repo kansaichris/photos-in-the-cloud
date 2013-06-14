@@ -5,7 +5,7 @@ require 'trollop'
 # opts[:bucket] holds the specified bucket, etc.
 def process_options
     Trollop::options do
-        version "S3 Photo Manager 0.1.0 (c) 2013 Christopher Frederick"
+        version "Amazon S3 Photo Uploader 0.1.0 (c) 2013 Christopher Frederick"
 
         opt :file, "File to upload",
             :type => :string, :required => true
