@@ -16,6 +16,19 @@ class PUTObject
         init_headers_with_key id, key
     end
 
+    def string_to_sign
+        # Selected elements from the Amazon S3 request to sign
+        #
+        # For more information, see
+        # http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html
+        string  = "PUT\n"
+        string << "#{@file.md5_hash}\n"
+        string << "#{@file.mime_type}\n"
+        string << "#{@date}\n"
+        # string << amz_headers
+        string << "/#{@bucket_name}/#{@file_path}"
+    end
+
     def init_headers_with_key id, key
         @headers = Hash.new
         @headers['Content-MD5']    = @file.md5_hash
@@ -45,18 +58,5 @@ class PUTObject
 
 
         http.send_request('PUT', "/" + @file_path, @file.content, @headers)
-    end
-
-    def string_to_sign
-        # Selected elements from the Amazon S3 request to sign
-        #
-        # For more information, see
-        # http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html
-        string  = "PUT\n"
-        string << "#{@file.md5_hash}\n"
-        string << "#{@file.mime_type}\n"
-        string << "#{@date}\n"
-        # string << amz_headers
-        string << "/#{@bucket_name}/#{@file_path}"
     end
 end
