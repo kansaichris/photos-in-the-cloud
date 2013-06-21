@@ -5,6 +5,7 @@
 require_relative 'utility'
 require_relative 'options'
 require_relative 'putobject'
+require_relative 's3file'
 
 require 'digest/sha1'
 require 'nokogiri'
@@ -15,7 +16,18 @@ require 'nokogiri'
 
 opts = process_options
 
-put_request = PUTObject.new(opts[:file], opts[:bucket], opts[:region], opts[:path], current_time, opts[:aws_key_id], opts[:aws_secret_key])
+file = S3File.new(opts[:file], "r")
+
+=begin
+puts "DEBUG: Details on #{file.path}"
+puts "------------------------------"
+puts "MIME type: #{file.mime_type}"
+puts "MD5 hash: #{file.md5_hash}"
+puts "SHA-1 hash: #{file.sha1_hash}"
+puts "------------------------------"
+=end
+
+put_request = PUTObject.new(file, opts[:bucket], opts[:region], opts[:path], current_time, opts[:aws_key_id], opts[:aws_secret_key])
 
 puts
 puts "DEBUG: String to sign:"
