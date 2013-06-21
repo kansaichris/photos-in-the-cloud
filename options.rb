@@ -22,6 +22,8 @@ Options:
         opt :bucket, "Amazon S3 bucket",
             :type => :string, :required => true
 
+        # For more information on Amazon S3 regions, see
+        # http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region
         opt :region, "Region where the bucket is located. By default, this is US Standard. Use 'us-west-2' for US West (Oregon), 'us-west-1' for US West (Northern California), 'eu' for EU (Ireland), 'ap-southeast-1' for Asia Pacific (Singapore), 'ap-southeast-2' for Asia Pacific (Sydney), 'ap-northeast-1' for Asia Pacific (Tokyo), and 'sa-east-1' for South America (Sao Paulo)",
             :type => :string
 
