@@ -71,7 +71,7 @@ class PUTObject
         # For more information, see
         # http://www.garykessler.net/library/file_sigs.html
         type = ''
-        jpg_regexp = Regexp.new("\xff\xd8\xff(\xe0|\xe1).{2}JFIF".force_encoding("binary"))
+        jpg_regexp = Regexp.new("\xff\xd8\xff(\xe0.{2}JFIF|\xe1.{2}Exif)".force_encoding("binary"))
         case IO.read(filename, 10)
         when /^#{jpg_regexp}/
             type = 'image/jpeg'
