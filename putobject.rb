@@ -4,16 +4,16 @@ require 'net/http'
 class PUTObject
     def initialize(file, bucket_name, region, path, date, id, key)
 
+        # Get the file's SHA-1 hash
+        sha1_hash = file.sha1_hash
+        file_path = path + "/" + sha1_hash[0..1] + "/" + sha1_hash[2..-1]
+
         # Init headers
         @headers = Hash.new
         @headers['Content-MD5']    = file.md5_hash
         @headers['Content-Type']   = file.mime_type
         @headers['Content-Length'] = file.size.to_s
         @headers['Date']           = date
-
-        # Get the file's SHA-1 hash
-        sha1_hash = file.sha1_hash
-        file_path = path + "/" + sha1_hash[0..1] + "/" + sha1_hash[2..-1]
 
         # Selected elements from the Amazon S3 request to sign
         #
