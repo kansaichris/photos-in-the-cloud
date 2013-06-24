@@ -26,6 +26,9 @@ class PUTObject
         string_to_sign << "\n"
         string_to_sign << @headers['Date'] unless @headers['Date'].nil?
         string_to_sign << "\n"
+        # NOTE: Add AMZ headers, if any, here
+        # See instructions on how to canonicalize these headers at
+        # http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html
         # string_to_sign << amz_headers
         string_to_sign << "/#{bucket_name}/#{file_path}"
 
