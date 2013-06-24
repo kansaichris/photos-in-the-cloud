@@ -13,23 +13,18 @@ class PUTObject
         @file_path     = path + "/" + sha1_hash[0..1] + "/" + sha1_hash[2..-1]
         @host_name     = "#{@bucket_name}.#{region}.amazonaws.com"
 
-        init_headers_with_key id, key
-    end
 
-    def string_to_sign
         # Selected elements from the Amazon S3 request to sign
         #
         # For more information, see
         # http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html
-        string  = "PUT\n"
-        string << "#{@file.md5_hash}\n"
-        string << "#{@file.mime_type}\n"
-        string << "#{@date}\n"
-        # string << amz_headers
-        string << "/#{@bucket_name}/#{@file_path}"
-    end
+        string_to_sign  = "PUT\n"
+        string_to_sign << "#{file.md5_hash}\n"
+        string_to_sign << "#{file.mime_type}\n"
+        string_to_sign << "#{date}\n"
+        # string_to_sign << amz_headers
+        string_to_sign << "/#{bucket_name}/#{file_path}"
 
-    def init_headers_with_key id, key
         @headers = Hash.new
         @headers['Content-MD5']    = @file.md5_hash
         @headers['Content-Type']   = @file.mime_type
