@@ -5,14 +5,12 @@ class PUTObject
     def initialize(file, bucket_name, region, path, date, id, key)
         # File and date
         @file          = file
-        sha1_hash      = @file.sha1_hash
         @date          = date
 
-        # Amazon S3 setup
-        @bucket_name   = bucket_name
-        @file_path     = path + "/" + sha1_hash[0..1] + "/" + sha1_hash[2..-1]
-        @host_name     = "#{@bucket_name}.#{region}.amazonaws.com"
 
+        # Get the file's SHA-1 hash
+        sha1_hash = file.sha1_hash
+        file_path = path + "/" + sha1_hash[0..1] + "/" + sha1_hash[2..-1]
 
         # Selected elements from the Amazon S3 request to sign
         #
@@ -31,6 +29,10 @@ class PUTObject
         @headers['Content-Length'] = @file.size.to_s
         @headers['Date']           = @date
         @headers['Authorization']  = auth_header(id, key, string_to_sign)
+
+        # Amazon S3 setup
+        @host_name = "#{bucket_name}.#{region}.amazonaws.com"
+        @file_path = file_path
     end
 
     # Calculate the Base64-encoded SHA-1 HMAC signature of a key and string
