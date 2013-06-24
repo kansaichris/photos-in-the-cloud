@@ -20,9 +20,12 @@ class PUTObject
         # For more information, see
         # http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html
         string_to_sign  = "PUT\n"
-        string_to_sign << "#{file.md5_hash}\n"
-        string_to_sign << "#{file.mime_type}\n"
-        string_to_sign << "#{date}\n"
+        string_to_sign << @headers['Content-MD5'] unless @headers['Content-MD5'].nil?
+        string_to_sign << "\n"
+        string_to_sign << @headers['Content-Type'] unless @headers['Content-Type'].nil?
+        string_to_sign << "\n"
+        string_to_sign << @headers['Date'] unless @headers['Date'].nil?
+        string_to_sign << "\n"
         # string_to_sign << amz_headers
         string_to_sign << "/#{bucket_name}/#{file_path}"
 
