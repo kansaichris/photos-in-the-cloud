@@ -3,22 +3,30 @@ require 'net/http'
 
 class PUTObject
     def initialize(file, bucket_name, region, path, date, id, key)
+        # Save the Amazon S3 host name for later ###############################
+        @host_name = "#{bucket_name}.#{region}.amazonaws.com"
 
-        # Get the file's SHA-1 hash
+        # Get the file's handle and calculate its SHA-1 hash ###################
+        #
+        # NOTE: The file's SHA-1 hash will be used as its path in the
+        #       Amazon S3 bucket
+        #
+        @file = file
         sha1_hash = file.sha1_hash
-        file_path = path + "/" + sha1_hash[0..1] + "/" + sha1_hash[2..-1]
+        @file_path = path + "/" + sha1_hash[0..1] + "/" + sha1_hash[2..-1]
 
-        # Init headers
+        # Initialize the PUT request's HTTP headers ############################
         @headers = Hash.new
         @headers['Content-MD5']    = file.md5_hash
         @headers['Content-Type']   = file.mime_type
         @headers['Content-Length'] = file.size.to_s
         @headers['Date']           = date
 
-        # Selected elements from the Amazon S3 request to sign
+        # Build a string to sign for Amazon's authentication header ############
         #
         # For more information, see
         # http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html
+        #
         string_to_sign  = "PUT\n"
         string_to_sign << @headers['Content-MD5'] unless @headers['Content-MD5'].nil?
         string_to_sign << "\n"
@@ -27,18 +35,11 @@ class PUTObject
         string_to_sign << @headers['Date'] unless @headers['Date'].nil?
         string_to_sign << "\n"
         # NOTE: Add AMZ headers, if any, here
-        # See instructions on how to canonicalize these headers at
-        # http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html
         # string_to_sign << amz_headers
-        string_to_sign << "/#{bucket_name}/#{file_path}"
+        string_to_sign << "/#{bucket_name}/#{@file_path}"
 
+        # Calculate the authentication header ##################################
         @headers['Authorization']  = auth_header(id, key, string_to_sign)
-
-        # Amazon S3 setup
-        @host_name = "#{bucket_name}.#{region}.amazonaws.com"
-
-        @file = file
-        @file_path = file_path
     end
 
     # Calculate the Base64-encoded SHA-1 HMAC signature of a key and string
