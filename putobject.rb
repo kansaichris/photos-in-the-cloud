@@ -48,6 +48,26 @@ class PUTObject
     end
 
     ############################################################################
+    # HTTP Request and Response
+    ############################################################################
+
+    def get_response
+        uri = URI.parse("http://#{@host_name}/")
+        http = Net::HTTP.new(uri.host, uri.port)
+        # NOTE: I may want to use the following options at some point...
+        # http.use_ssl = true
+        # http.verify_mode = ?
+        # TIP: Try uncommenting the following line to debug issues!
+        # http.set_debug_output($stdout)
+
+        # TODO: Check to see if the file already exists. If it does,
+        #       don't bother to upload this one because it has the same
+        #       SHA-1 hash and thus the same content.
+
+        http.send_request('PUT', "/" + @file_path, @file.content, @headers)
+    end
+
+    ############################################################################
     # Amazon S3 Authentication Header Calculations
     ############################################################################
 
@@ -76,23 +96,4 @@ class PUTObject
         puts "-------------------------------------------------------"
     end
 
-    ############################################################################
-    # HTTP Request and Response
-    ############################################################################
-
-    def get_response
-        uri = URI.parse("http://#{@host_name}/")
-        http = Net::HTTP.new(uri.host, uri.port)
-        # NOTE: I may want to use the following options at some point...
-        # http.use_ssl = true
-        # http.verify_mode = ?
-        # TIP: Try uncommenting the following line to debug issues!
-        # http.set_debug_output($stdout)
-
-        # TODO: Check to see if the file already exists. If it does,
-        #       don't bother to upload this one because it has the same
-        #       SHA-1 hash and thus the same content.
-
-        http.send_request('PUT', "/" + @file_path, @file.content, @headers)
-    end
 end
