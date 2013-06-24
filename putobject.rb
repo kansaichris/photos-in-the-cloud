@@ -2,6 +2,11 @@ require_relative 's3file'
 require 'net/http'
 
 class PUTObject
+
+    ############################################################################
+    # Initialization
+    ############################################################################
+
     def initialize(file, bucket_name, region, path, date, id, key)
         # Save the Amazon S3 host name for later ###############################
         @host_name = "#{bucket_name}.#{region}.amazonaws.com"
@@ -42,6 +47,10 @@ class PUTObject
         @headers['Authorization']  = auth_header(id, key, string_to_sign)
     end
 
+    ############################################################################
+    # Amazon S3 Authentication Header Calculations
+    ############################################################################
+
     # Calculate the Base64-encoded SHA-1 HMAC signature of a key and string
     def hmac_signature(key, string_to_sign)
         digest = OpenSSL::HMAC.digest('sha1', key, string_to_sign)
@@ -54,6 +63,10 @@ class PUTObject
         header = "AWS #{access_key_id}:#{signature}"
     end
 
+    ############################################################################
+    # Debugging Methods
+    ############################################################################
+
     def print_headers
         puts "DEBUG: Printing HTTP headers in the PUT OBJECT request:"
         puts "-------------------------------------------------------"
@@ -62,6 +75,10 @@ class PUTObject
         end
         puts "-------------------------------------------------------"
     end
+
+    ############################################################################
+    # HTTP Request and Response
+    ############################################################################
 
     def get_response
         uri = URI.parse("http://#{@host_name}/")
