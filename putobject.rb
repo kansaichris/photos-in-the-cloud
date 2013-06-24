@@ -38,6 +38,18 @@ class PUTObject
         @headers['Authorization']  = auth_header(id, key, string_to_sign)
     end
 
+    # Calculate the Base64-encoded SHA-1 HMAC signature of a key and string
+    def hmac_signature(key, string_to_sign)
+        digest = OpenSSL::HMAC.digest('sha1', key, string_to_sign)
+        signature = Base64.encode64(digest)
+    end
+
+    # Calculate the authentication header for an Amazon Web Services request
+    def auth_header(access_key_id, secret_access_key, string_to_sign)
+        signature = hmac_signature(secret_access_key, string_to_sign)
+        header = "AWS #{access_key_id}:#{signature}"
+    end
+
     def print_headers
         puts "DEBUG: Printing HTTP headers in the PUT OBJECT request:"
         puts "-------------------------------------------------------"
