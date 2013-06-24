@@ -29,13 +29,6 @@ puts "------------------------------"
 
 put_request = PUTObject.new(file, opts[:bucket], opts[:region], opts[:path], current_time, opts[:aws_key_id], opts[:aws_secret_key])
 
-puts
-puts "DEBUG: String to sign:"
-puts "----------------------"
-puts put_request.string_to_sign
-puts "----------------------"
-puts
-
 put_request.print_headers
 
 response = put_request.get_response
