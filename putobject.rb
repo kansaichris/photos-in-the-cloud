@@ -3,10 +3,13 @@ require 'net/http'
 
 class PUTObject
     def initialize(file, bucket_name, region, path, date, id, key)
-        # File and date
-        @file          = file
-        @date          = date
 
+        # Init headers
+        @headers = Hash.new
+        @headers['Content-MD5']    = file.md5_hash
+        @headers['Content-Type']   = file.mime_type
+        @headers['Content-Length'] = file.size.to_s
+        @headers['Date']           = date
 
         # Get the file's SHA-1 hash
         sha1_hash = file.sha1_hash
@@ -23,15 +26,12 @@ class PUTObject
         # string_to_sign << amz_headers
         string_to_sign << "/#{bucket_name}/#{file_path}"
 
-        @headers = Hash.new
-        @headers['Content-MD5']    = @file.md5_hash
-        @headers['Content-Type']   = @file.mime_type
-        @headers['Content-Length'] = @file.size.to_s
-        @headers['Date']           = @date
         @headers['Authorization']  = auth_header(id, key, string_to_sign)
 
         # Amazon S3 setup
         @host_name = "#{bucket_name}.#{region}.amazonaws.com"
+
+        @file = file
         @file_path = file_path
     end
 
