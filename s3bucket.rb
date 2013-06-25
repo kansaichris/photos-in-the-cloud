@@ -47,12 +47,12 @@ class S3Bucket
         # Calculate the authentication header ##################################
         headers['Authorization'] = auth_header(aws_key, string_to_sign)
 
-        puts "DEBUG: Printing HTTP headers in the PUT OBJECT request:"
-        puts "-------------------------------------------------------"
+        puts "DEBUG: Printing HTTP headers in the request:"
+        puts "--------------------------------------------"
         headers.each do |key,value|
             puts "#{key} = #{value}"
         end
-        puts "-------------------------------------------------------"
+        puts "--------------------------------------------"
 
         uri = URI.parse("http://#{host}/")
         http = Net::HTTP.new(uri.host, uri.port)
