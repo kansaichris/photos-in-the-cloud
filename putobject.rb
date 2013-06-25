@@ -11,7 +11,7 @@ class PUTObject
 
     def initialize(file, bucket, path, aws_key)
         # Save the Amazon S3 host name for later ###############################
-        @host_name = "#{bucket.name}.#{bucket.region}.amazonaws.com"
+        @host_name = bucket.host
 
         # Get the current time #################################################
         date = current_time
