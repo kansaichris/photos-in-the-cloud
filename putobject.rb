@@ -1,5 +1,6 @@
 require_relative 's3file'
 require_relative 's3bucket'
+require_relative 'aws_key'
 require 'net/http'
 
 class PUTObject
@@ -8,7 +9,7 @@ class PUTObject
     # Initialization
     ############################################################################
 
-    def initialize(file, bucket, path, date, id, key)
+    def initialize(file, bucket, path, date, aws_key)
         # Save the Amazon S3 host name for later ###############################
         @host_name = "#{bucket.name}.#{bucket.region}.amazonaws.com"
 
@@ -45,7 +46,7 @@ class PUTObject
         string_to_sign << "/#{bucket.name}/#{@file_path}"
 
         # Calculate the authentication header ##################################
-        @headers['Authorization']  = auth_header(id, key, string_to_sign)
+        @headers['Authorization']  = auth_header(aws_key, string_to_sign)
     end
 
     ############################################################################
@@ -79,9 +80,9 @@ class PUTObject
     end
 
     # Calculate the authentication header for an Amazon Web Services request
-    def auth_header(access_key_id, secret_access_key, string_to_sign)
-        signature = hmac_signature(secret_access_key, string_to_sign)
-        header = "AWS #{access_key_id}:#{signature}"
+    def auth_header(aws_key, string_to_sign)
+        signature = hmac_signature(aws_key.secret, string_to_sign)
+        header = "AWS #{aws_key.id}:#{signature}"
     end
 
     ############################################################################

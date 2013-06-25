@@ -15,8 +15,9 @@ require 'nokogiri'
 
 opts = process_options
 
-file   = S3File.new(opts[:file], "r")
-bucket = S3Bucket.new(opts[:bucket], opts[:region])
+file    = S3File.new(opts[:file], "r")
+bucket  = S3Bucket.new(opts[:bucket], opts[:region])
+aws_key = AWSKey.new(opts[:aws_key_id], opts[:aws_secret_key])
 
 =begin
 puts "DEBUG: Details on #{file.path}"
@@ -27,7 +28,7 @@ puts "SHA-1 hash: #{file.sha1_hash}"
 puts "------------------------------"
 =end
 
-put_request = PUTObject.new(file, bucket, opts[:path], current_time, opts[:aws_key_id], opts[:aws_secret_key])
+put_request = PUTObject.new(file, bucket, opts[:path], current_time, aws_key)
 
 put_request.print_headers
 
