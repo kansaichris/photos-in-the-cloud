@@ -21,16 +21,19 @@ class S3Bucket
         file_path = path + "/" + sha1_hash[0..1] + "/" + sha1_hash[2..-1]
 
         # Send the request #####################################################
-        send_put_request(headers, file.content, aws_key, file_path)
+        send_request('PUT', file_path, aws_key, headers, file.content)
     end
 
-    def send_put_request(headers, data, aws_key, path)
+    def send_request(verb, path, aws_key, headers, data = nil)
+        # Make sure that the HTTP verb is uppercase
+        verb.upcase!
+
         # Build a string to sign for Amazon's authentication header ############
         #
         # For more information, see
         # http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html
         #
-        string_to_sign  = "PUT\n"
+        string_to_sign  = "#{verb}\n"
         string_to_sign << headers['Content-MD5'] unless headers['Content-MD5'].nil?
         string_to_sign << "\n"
         string_to_sign << headers['Content-Type'] unless headers['Content-Type'].nil?
@@ -63,7 +66,7 @@ class S3Bucket
         #       don't bother to upload this one because it has the same
         #       SHA-1 hash and thus the same content.
 
-        http.send_request('PUT', "/" + path, data, headers)
+        http.send_request(verb, "/" + path, data, headers)
     end
 
     # Calculate the authentication header for an Amazon Web Services request
