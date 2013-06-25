@@ -28,11 +28,7 @@ puts "SHA-1 hash: #{file.sha1_hash}"
 puts "------------------------------"
 =end
 
-put_request = PUTObject.new(file, bucket, opts[:path], aws_key)
-
-put_request.print_headers
-
-response = put_request.get_response
+response = bucket.put_file(file, aws_key, opts[:path])
 
 puts "Response code: #{response.code}"
 puts "Response message: #{response.message}"
