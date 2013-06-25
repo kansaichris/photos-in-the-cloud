@@ -4,5 +4,9 @@ class S3Bucket
         @region = region
     end
 
+    def host
+        "#{@name}.#{@region}.amazonaws.com"
+    end
+
     attr_reader :name, :region
 end
