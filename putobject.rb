@@ -9,9 +9,12 @@ class PUTObject
     # Initialization
     ############################################################################
 
-    def initialize(file, bucket, path, date, aws_key)
+    def initialize(file, bucket, path, aws_key)
         # Save the Amazon S3 host name for later ###############################
         @host_name = "#{bucket.name}.#{bucket.region}.amazonaws.com"
+
+        # Get the current time #################################################
+        date = current_time
 
         # Get the file's handle and calculate its SHA-1 hash ###################
         #

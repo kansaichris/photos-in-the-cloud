@@ -28,7 +28,7 @@ puts "SHA-1 hash: #{file.sha1_hash}"
 puts "------------------------------"
 =end
 
-put_request = PUTObject.new(file, bucket, opts[:path], current_time, aws_key)
+put_request = PUTObject.new(file, bucket, opts[:path], aws_key)
 
 put_request.print_headers
 
