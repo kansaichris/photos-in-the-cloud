@@ -1,4 +1,5 @@
 require_relative 's3file'
+require_relative 's3bucket'
 require 'net/http'
 
 class PUTObject
@@ -7,9 +8,9 @@ class PUTObject
     # Initialization
     ############################################################################
 
-    def initialize(file, bucket_name, region, path, date, id, key)
+    def initialize(file, bucket, path, date, id, key)
         # Save the Amazon S3 host name for later ###############################
-        @host_name = "#{bucket_name}.#{region}.amazonaws.com"
+        @host_name = "#{bucket.name}.#{bucket.region}.amazonaws.com"
 
         # Get the file's handle and calculate its SHA-1 hash ###################
         #
@@ -41,7 +42,7 @@ class PUTObject
         string_to_sign << "\n"
         # NOTE: Add AMZ headers, if any, here
         # string_to_sign << amz_headers
-        string_to_sign << "/#{bucket_name}/#{@file_path}"
+        string_to_sign << "/#{bucket.name}/#{@file_path}"
 
         # Calculate the authentication header ##################################
         @headers['Authorization']  = auth_header(id, key, string_to_sign)
