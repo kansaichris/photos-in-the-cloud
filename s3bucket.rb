@@ -1,3 +1,7 @@
+require_relative 's3file'
+require_relative 'aws_key'
+require_relative 'utility'
+
 require 'httparty'
 
 class S3Bucket
