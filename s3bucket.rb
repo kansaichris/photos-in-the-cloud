@@ -1,4 +1,9 @@
+require 'httparty'
+
 class S3Bucket
+
+    include HTTParty
+
     def initialize(name, region="s3")
         @name = name
         @region = region
@@ -25,15 +30,12 @@ class S3Bucket
     end
 
     def send_request(verb, path, aws_key, headers, data = nil)
-        # Make sure that the HTTP verb is uppercase
-        verb.upcase!
-
         # Build a string to sign for Amazon's authentication header ############
         #
         # For more information, see
         # http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html
         #
-        string_to_sign  = "#{verb}\n"
+        string_to_sign  = "#{verb.upcase}\n"
         string_to_sign << headers['Content-MD5'] unless headers['Content-MD5'].nil?
         string_to_sign << "\n"
         string_to_sign << headers['Content-Type'] unless headers['Content-Type'].nil?
@@ -54,19 +56,12 @@ class S3Bucket
         end
         puts "--------------------------------------------"
 
-        uri = URI.parse("http://#{host}/")
-        http = Net::HTTP.new(uri.host, uri.port)
-        # NOTE: I may want to use the following options at some point...
-        # http.use_ssl = true
-        # http.verify_mode = ?
-        # TIP: Try uncommenting the following line to debug issues!
-        # http.set_debug_output($stdout)
-
         # TODO: Check to see if the file already exists. If it does,
         #       don't bother to upload this one because it has the same
         #       SHA-1 hash and thus the same content.
 
-        http.send_request(verb, "/" + path, data, headers)
+        self.class.base_uri "http://#{host}/"
+        self.class.send(verb.downcase, "/" + path, :headers => headers, :body => data)
     end
 
     # Calculate the authentication header for an Amazon Web Services request
