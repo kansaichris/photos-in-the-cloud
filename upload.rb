@@ -7,7 +7,6 @@ require_relative 'options'
 require_relative 'putobject'
 
 require 'digest/sha1'
-require 'nokogiri'
 
 ###############################################################################
 # MAIN
