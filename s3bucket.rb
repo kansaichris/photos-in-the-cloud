@@ -13,6 +13,18 @@ class S3Bucket
         "#{@name}.#{@region}.amazonaws.com"
     end
 
+    def contains?(file_path, aws_key)
+        # Initialize the HEAD request's HTTP headers
+        headers = Hash.new
+        headers['Date']           = current_time
+
+        # Send the request
+        response = send_request('HEAD', file_path, aws_key, headers)
+
+        # Check the return code
+        response.code == 200
+    end
+
     def put_file(file, aws_key, path="")
         # Initialize the PUT request's HTTP headers ############################
         headers = Hash.new
