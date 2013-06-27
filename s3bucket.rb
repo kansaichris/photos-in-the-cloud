@@ -59,7 +59,7 @@ class S3Bucket
         string_to_sign << "/#{name}/#{path}"
 
         # Calculate the authentication header ##################################
-        headers['Authorization'] = auth_header(aws_key, string_to_sign)
+        headers['Authorization'] = aws_key.auth_header(string_to_sign)
 
         puts "DEBUG: Printing HTTP headers in the request:"
         puts "--------------------------------------------"
@@ -74,18 +74,6 @@ class S3Bucket
 
         self.class.base_uri "http://#{host}/"
         self.class.send(verb.downcase, "/" + path, :headers => headers, :body => data)
-    end
-
-    # Calculate the authentication header for an Amazon Web Services request
-    def auth_header(aws_key, string_to_sign)
-        signature = hmac_signature(aws_key.secret, string_to_sign)
-        header = "AWS #{aws_key.id}:#{signature}"
-    end
-
-    # Calculate the Base64-encoded SHA-1 HMAC signature of a key and string
-    def hmac_signature(key, string_to_sign)
-        digest = OpenSSL::HMAC.digest('sha1', key, string_to_sign)
-        signature = Base64.encode64(digest)
     end
 
     attr_reader :name, :region
