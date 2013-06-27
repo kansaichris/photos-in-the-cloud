@@ -3,7 +3,7 @@
 # Upload a file to Amazon S3 using its SHA-1 hash as its filename
 
 require_relative 'options'
-require_relative 'putobject'
+require_relative 's3bucket'
 
 require 'digest/sha1'
 
