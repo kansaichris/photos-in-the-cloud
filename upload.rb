@@ -15,17 +15,15 @@ file    = S3File.new(opts[:file], "r")
 bucket  = S3Bucket.new(opts[:bucket], opts[:region])
 aws_key = AWSKey.new(opts[:aws_key_id], opts[:aws_secret_key])
 
-=begin
-puts "DEBUG: Details on #{file.path}"
-puts "------------------------------"
-puts "MIME type: #{file.mime_type}"
-puts "MD5 hash: #{file.md5_hash}"
-puts "SHA-1 hash: #{file.sha1_hash}"
-puts "------------------------------"
-=end
-
-
-
+puts
+puts "Uploading #{file.path} to #{bucket.name}..."
+puts <<FILE_INFO
+--------------------------------------------------------------------------------
+DEBUG: The file's MIME type is #{file.mime_type}
+DEBUG: The file's MD5 hash is #{file.md5_hash}
+DEBUG: The file's SHA-1 hash is #{file.sha1_hash}
+--------------------------------------------------------------------------------
+FILE_INFO
 
 response = bucket.put_file(file, aws_key, opts[:path])
 
