@@ -65,12 +65,14 @@ class S3Bucket
         # Calculate the authentication header ##################################
         headers['Authorization'] = aws_key.auth_header(string_to_sign)
 
+=begin
         puts "DEBUG: Printing HTTP headers in the request:"
         puts "--------------------------------------------"
         headers.each do |key,value|
             puts "#{key} = #{value}"
         end
         puts "--------------------------------------------"
+=end
 
         # TODO: Check to see if the file already exists. If it does,
         #       don't bother to upload this one because it has the same
