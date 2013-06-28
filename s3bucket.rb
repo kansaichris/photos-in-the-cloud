@@ -51,13 +51,12 @@ class S3Bucket
         # For more information, see
         # http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html
         #
-        string_to_sign  = "#{verb.upcase}\n"
-        string_to_sign << headers['Content-MD5'] unless headers['Content-MD5'].nil?
-        string_to_sign << "\n"
-        string_to_sign << headers['Content-Type'] unless headers['Content-Type'].nil?
-        string_to_sign << "\n"
-        string_to_sign << headers['Date'] unless headers['Date'].nil?
-        string_to_sign << "\n"
+        string_to_sign = <<-STRING
+#{verb.upcase}
+#{headers['Content-MD5']}
+#{headers['Content-Type']}
+#{headers['Date']}
+        STRING
         # NOTE: Add AMZ headers, if any, here
         # string_to_sign << amz_headers
         string_to_sign << "/#{name}/#{path}"
