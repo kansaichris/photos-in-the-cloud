@@ -13,7 +13,7 @@ class S3Bucket
         @region = region
     end
 
-    def host
+    def hostname
         "#{@name}.#{@region}.amazonaws.com"
     end
 
@@ -77,7 +77,7 @@ class S3Bucket
         #       don't bother to upload this one because it has the same
         #       SHA-1 hash and thus the same content.
 
-        self.class.base_uri "http://#{host}/"
+        self.class.base_uri "http://#{hostname}/"
         self.class.send(verb.downcase, "/" + path, :headers => headers, :body => data)
     end
 
