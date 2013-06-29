@@ -16,7 +16,7 @@ bucket  = S3Bucket.new(opts[:bucket], opts[:region])
 aws_key = AWSKey.new(opts[:aws_key_id], opts[:aws_secret_key])
 
 puts
-puts "Uploading #{file.path} to #{bucket.name}..."
+puts "Uploading #{file.path} to #{bucket.hostname}..."
 puts <<FILE_INFO
 --------------------------------------------------------------------------------
 DEBUG: The file's MIME type is #{file.mime_type}
