@@ -26,14 +26,17 @@ DEBUG: The file's SHA-1 hash is #{file.sha1_hash}
 FILE_INFO
 
 response = bucket.put_file(file, aws_key, opts[:path])
-headers  = response.headers.map { |key, value| "DEBUG: #{key} = #{value.join(', ')}" }
 
-puts
-puts "Printing response..."
-puts <<RESPONSE
+unless response.nil?
+    headers  = response.headers.map { |key, value| "DEBUG: #{key} = #{value.join(', ')}" }
+
+    puts
+    puts "Printing response..."
+    puts <<-RESPONSE
 --------------------------------------------------------------------------------
 DEBUG: The HTTP status code is #{response.code} #{response.message}
 DEBUG: The response headers are
 #{ headers.join("\n") }
 --------------------------------------------------------------------------------
-RESPONSE
+    RESPONSE
+end

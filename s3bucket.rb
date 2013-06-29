@@ -41,8 +41,8 @@ class S3Bucket
         sha1_hash = file.sha1_hash
         file_path = path + "/" + sha1_hash[0..1] + "/" + sha1_hash[2..-1]
 
-        # Send the request #####################################################
-        send_request('PUT', file_path, aws_key, headers, file.content)
+        # Send the request, but only if the file doesn't already exist #########
+        send_request('PUT', file_path, aws_key, headers, file.content) unless contains?(file_path, aws_key)
     end
 
     def send_request(verb, path, aws_key, headers, data = nil)
@@ -72,10 +72,6 @@ class S3Bucket
         end
         puts "--------------------------------------------"
 =end
-
-        # TODO: Check to see if the file already exists. If it does,
-        #       don't bother to upload this one because it has the same
-        #       SHA-1 hash and thus the same content.
 
         self.class.base_uri "http://#{hostname}/"
         self.class.send(verb.downcase, "/" + path, :headers => headers, :body => data)
