@@ -22,10 +22,10 @@ class S3File < File
     end
 
     def md5_hash
-        @md5_hash = Digest::MD5.base64digest content
+        @md5_hash ||= Digest::MD5.base64digest content
     end
 
     def sha1_hash
-        @sha1_hash = Digest::SHA1.hexdigest content
+        @sha1_hash ||= Digest::SHA1.hexdigest content
     end
 end
