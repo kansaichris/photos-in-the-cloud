@@ -1,4 +1,9 @@
 class S3File < File
+    # The prefix to use when storing the file in an Amazon S3 bucket
+    def s3_prefix
+        "objects"
+    end
+
     def content
         @content ||= File.read(path, size)
     end
@@ -27,5 +32,9 @@ class S3File < File
 
     def sha1_hash
         @sha1_hash ||= Digest::SHA1.hexdigest content
+    end
+
+    def s3_path
+        @s3_path ||= s3_prefix + "/" + sha1_hash[0..1] + "/" + sha1_hash[2..-1]
     end
 end
