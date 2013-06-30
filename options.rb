@@ -27,9 +27,6 @@ Options:
         opt :region, "Region where the bucket is located. By default, this is 's3' for US Standard. Use 's3-us-west-2' for US West (Oregon), 's3-us-west-1' for US West (Northern California), 's3-eu-west-1' for EU (Ireland), 's3-ap-southeast-1' for Asia Pacific (Singapore), 's3-ap-southeast-2' for Asia Pacific (Sydney), 's3-ap-northeast-1' for Asia Pacific (Tokyo), and 's3-sa-east-1' for South America (Sao Paulo)",
             :type => :string, :default => 's3'
 
-        opt :path, "Photo path (filename prefix) in the specified bucket",
-            :type => :string, :required => true
-
         opt :aws_key_id, "Access key ID for Amazon Web Services",
             :type => :string, :required => true
 

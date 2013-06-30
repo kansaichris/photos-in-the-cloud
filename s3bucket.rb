@@ -17,19 +17,19 @@ class S3Bucket
         "#{@name}.#{@region}.amazonaws.com"
     end
 
-    def contains?(file_path, aws_key)
+    def contains?(file, aws_key)
         # Initialize the HEAD request's HTTP headers
         headers = Hash.new
         headers['Date']           = current_time
 
         # Send the request
-        response = send_request('HEAD', file_path, aws_key, headers)
+        response = send_request('HEAD', file.s3_path, aws_key, headers)
 
         # Check the return code
         response.code == 200
     end
 
-    def put_file(file, aws_key, path="")
+    def put_file(file, aws_key)
         # Initialize the PUT request's HTTP headers ############################
         headers = Hash.new
         headers['Content-MD5']    = file.md5_hash
@@ -37,12 +37,8 @@ class S3Bucket
         headers['Content-Length'] = file.size.to_s
         headers['Date']           = current_time
 
-        # Calculate the file's SHA-1 hash to use as its path ###################
-        sha1_hash = file.sha1_hash
-        file_path = path + "/" + sha1_hash[0..1] + "/" + sha1_hash[2..-1]
-
         # Send the request, but only if the file doesn't already exist #########
-        send_request('PUT', file_path, aws_key, headers, file.content) unless contains?(file_path, aws_key)
+        send_request('PUT', file.s3_path, aws_key, headers, file.content) unless contains?(file, aws_key)
     end
 
     def send_request(verb, path, aws_key, headers, data = nil)
