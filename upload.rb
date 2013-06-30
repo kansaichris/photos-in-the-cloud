@@ -16,7 +16,7 @@ bucket  = S3Bucket.new(opts[:bucket], opts[:region])
 aws_key = AWSKey.new(opts[:aws_key_id], opts[:aws_secret_key])
 
 puts
-puts "Uploading #{file.path} to #{bucket.hostname}..."
+puts "Uploading #{file.path} to #{bucket.hostname}/#{file.s3_path}..."
 puts <<FILE_INFO
 --------------------------------------------------------------------------------
 DEBUG: The file's MIME type is #{file.mime_type}
@@ -27,7 +27,9 @@ FILE_INFO
 
 response = bucket.put_file(file, aws_key)
 
-unless response.nil?
+if response.nil?
+    puts "The bucket '#{bucket.name}' already contains #{file.path}."
+else
     headers  = response.headers.map { |key, value| "DEBUG: #{key} = #{value.join(', ')}" }
 
     puts
