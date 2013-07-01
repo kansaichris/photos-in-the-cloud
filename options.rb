@@ -5,7 +5,7 @@ require 'trollop'
 # opts[:bucket] holds the specified bucket, etc.
 def process_options
     parser = Trollop::Parser.new do
-        version "Amazon S3 Photo Uploader 0.1.0 (c) 2013 Christopher Frederick"
+        version "Amazon S3 Photo Uploader 0.3.0 (c) 2013 Christopher Frederick"
 
         banner <<-EOS
 This program uploads a file to an Amazon S3 bucket.
