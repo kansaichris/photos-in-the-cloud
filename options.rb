@@ -28,10 +28,10 @@ Options:
             :type => :string, :default => 's3'
 
         opt :aws_key_id, "Access key ID for Amazon Web Services",
-            :type => :string, :required => true
+            :type => :string
 
         opt :aws_secret_key, "Secret access key for Amazon Web Services",
-            :type => :string, :required => true
+            :type => :string
     end
 
     Trollop::with_standard_exception_handling parser do
