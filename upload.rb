@@ -88,3 +88,23 @@ DEBUG: The file's SHA-1 hash is #{image.sha1_hash}
 
     RESPONSE
 end
+
+if opts[:dir]
+    # Print all image files in the directory to upload
+    image_glob = File.join("**", "*.jpg")
+    images = Dir[image_glob]
+    puts "Files to upload: #{images.size}"
+    count = 1
+    format = "%4d: %s\n"
+    images.each do |filename|
+        printf(format, count, filename)
+        # Upload the specified file
+        puts <<-HR
+--------------------------------------------------------------------------------
+        HR
+        image = Image.new(filename)
+        image.upload_to(bucket)
+        puts
+        count += 1
+    end
+end

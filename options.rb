@@ -17,7 +17,10 @@ Options:
         EOS
 
         opt :file, "File to upload",
-            :type => :string, :required => true
+            :type => :string
+
+        opt :dir, "Directory with files to upload",
+            :type => :string
 
         opt :bucket, "Amazon S3 bucket",
             :type => :string, :required => true
