@@ -12,6 +12,7 @@ GEM
     multi_json (1.7.7)
     multi_xml (0.5.4)
     nokogiri (1.5.9)
+    ruby-progressbar (1.1.1)
     trollop (2.0)
     uuidtools (2.1.4)
 
@@ -22,4 +23,5 @@ DEPENDENCIES
   aws-sdk (~> 1.0)
   httparty
   nokogiri
+  ruby-progressbar
   trollop
