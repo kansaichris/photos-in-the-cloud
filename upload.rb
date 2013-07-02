@@ -63,26 +63,18 @@ bucket = s3.buckets[opts[:bucket]]
 
 if opts[:file]
     # Print local file info
-    file = Image.new(opts[:file])
+    image = Image.new(opts[:file])
     puts <<-FILE_INFO
 --------------------------------------------------------------------------------
-DEBUG: The file's MIME type is #{file.mime_type}
-DEBUG: The file's MD5 hash is #{file.md5_hash}
-DEBUG: The file's SHA-1 hash is #{file.sha1_hash}
+DEBUG: The file's MIME type is #{image.mime_type}
+DEBUG: The file's MD5 hash is #{image.md5_hash}
+DEBUG: The file's SHA-1 hash is #{image.sha1_hash}
 --------------------------------------------------------------------------------
 
     FILE_INFO
 
     # Upload the specified file
-    object = bucket.objects[file.s3_path]
-
-    if object.exists?
-        puts "#{file.path} already exists at #{object.public_url}."
-    else
-        puts "Uploading #{file.path} to #{object.public_url}..."
-        object.write(file, :content_md5 => file.md5_hash, :content_type => file.mime_type)
-        puts "Done."
-    end
+    image.upload_to(bucket)
 
     # Print remote file info
     info = object.head.map { |key, value| "DEBUG: #{key} = #{value.inspect}" }

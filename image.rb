@@ -43,5 +43,19 @@ class Image
         @s3_path ||= s3_prefix + "/" + sha1_hash[0..1] + "/" + sha1_hash[2..-1]
     end
 
+    def upload_to bucket
+        @object = bucket.objects[s3_path]
+
+        if object.exists?
+            puts "#{path} already exists at #{object.public_url}."
+        else
+            puts "Uploading #{path} to #{object.public_url}..."
+            object.write(:file => path,
+                         :content_md5 => md5_hash,
+                         :content_type => mime_type)
+            puts "Done."
+        end
+    end
+
     attr_reader :path, :size
 end
