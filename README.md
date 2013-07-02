@@ -1,7 +1,7 @@
 # Amazon S3 Photo Management Tools
 
 1. [Overview](#overview)
-2. [Current Features](#current-features-version-040)
+2. [Current Features](#current-features-version-050)
 3. [Planned Features](#planned-features)
 4. [FAQ](#faq)
 
@@ -17,7 +17,7 @@ I started this project as a simple Ruby script to upload files to Amazon Simple 
 
 I haven't found a program or service with all of these features, so I decided to try to write my own. Progress may be slow as this is still just a hobby project for me, but in the meantime I hope that someone else will find it to be useful, either as a tool or as a reference point for learning how to use the Amazon S3 REST API with Ruby.
 
-## Current Features (version 0.4.0)
+## Current Features (version 0.5.0)
 
 - Upload individual photos named with SHA-1 hashes (like Git)
 
