@@ -10,7 +10,7 @@ require 'yaml'
 require 'aws-sdk'
 
 ################################################################################
-# MAIN
+# Process YAML and command-line options
 ################################################################################
 
 # Read the YAML config file if it exists
@@ -47,6 +47,10 @@ secret_access_key: YOUR_SECRET_ACCESS_KEY
 END
     exit 1
 end
+
+################################################################################
+# MAIN
+################################################################################
 
 # Configure Amazon Web Services
 AWS.config(config)
