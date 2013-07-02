@@ -1,4 +1,9 @@
-class S3File < File
+class Image
+    def initialize path
+        @path = path
+        @size = File.size(path)
+    end
+
     # The prefix to use when storing the file in an Amazon S3 bucket
     def s3_prefix
         "objects"
@@ -37,4 +42,6 @@ class S3File < File
     def s3_path
         @s3_path ||= s3_prefix + "/" + sha1_hash[0..1] + "/" + sha1_hash[2..-1]
     end
+
+    attr_reader :path, :size
 end

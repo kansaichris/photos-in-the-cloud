@@ -3,7 +3,7 @@
 # Upload a file to Amazon S3 using its SHA-1 hash as its filename
 
 require_relative 'options'
-require_relative 's3file'
+require_relative 'image'
 
 require 'rubygems'
 require 'yaml'
@@ -61,36 +61,38 @@ s3 = AWS::S3.new
 # Get a reference to the specified bucket
 bucket = s3.buckets[opts[:bucket]]
 
-# Print local file info
-file = S3File.new(opts[:file], "r")
-puts <<FILE_INFO
+if opts[:file]
+    # Print local file info
+    file = Image.new(opts[:file])
+    puts <<-FILE_INFO
 --------------------------------------------------------------------------------
 DEBUG: The file's MIME type is #{file.mime_type}
 DEBUG: The file's MD5 hash is #{file.md5_hash}
 DEBUG: The file's SHA-1 hash is #{file.sha1_hash}
 --------------------------------------------------------------------------------
 
-FILE_INFO
+    FILE_INFO
 
-# Upload the specified file
-object = bucket.objects[file.s3_path]
+    # Upload the specified file
+    object = bucket.objects[file.s3_path]
 
-if object.exists?
-    puts "#{file.path} already exists at #{object.public_url}."
-else
-    puts "Uploading #{file.path} to #{object.public_url}..."
-    object.write(file, :content_md5 => file.md5_hash, :content_type => file.mime_type)
-    puts "Done."
-end
+    if object.exists?
+        puts "#{file.path} already exists at #{object.public_url}."
+    else
+        puts "Uploading #{file.path} to #{object.public_url}..."
+        object.write(file, :content_md5 => file.md5_hash, :content_type => file.mime_type)
+        puts "Done."
+    end
 
-# Print remote file info
-info = object.head.map { |key, value| "DEBUG: #{key} = #{value.inspect}" }
+    # Print remote file info
+    info = object.head.map { |key, value| "DEBUG: #{key} = #{value.inspect}" }
 
-puts
-puts "Printing object info..."
-puts <<-RESPONSE
+    puts
+    puts "Printing object info..."
+    puts <<-RESPONSE
 --------------------------------------------------------------------------------
 #{ info.join("\n") }
 --------------------------------------------------------------------------------
 
-RESPONSE
+    RESPONSE
+end
