@@ -13,36 +13,9 @@ require 'aws-sdk'
 # MAIN
 ################################################################################
 
-# Process command-line options
-opts = process_options
-
-# Set up the YAML filename
-config_file = File.join(File.dirname(__FILE__), "config.yml")
-
 # Read the YAML config file if it exists
-if File.exist?(config_file)
-
-    config = YAML.load(File.read(config_file))
-
-# If there is no YAML file, set the AWS access keys from command-line options
-elsif opts[:aws_key_id] && opts[:aws_key_id]
-
-    config['access_key_id']     = opts[:aws_key_id]
-    config['secret_access_key'] = opts[:aws_secret_key]
-
-# If no AWS access keys have been specified, quit with an error message
-else
-
-    puts <<END
-Specify your AWS credentials on the command-line or in config.yml as follows:
-
-access_key_id: YOUR_ACCESS_KEY_ID
-secret_access_key: YOUR_SECRET_ACCESS_KEY
-
-END
-    exit 1
-
-end
+config_file = File.join(File.dirname(__FILE__), "config.yml")
+config = File.exist?(config_file) ? YAML.load(File.read(config_file)) : Hash.new
 
 # If the YAML config file wasn't formatted correctly, quit with an error message
 unless config.kind_of?(Hash)
@@ -56,6 +29,25 @@ END
   exit 1
 end
 
+# Process command-line options
+opts = process_options
+
+# Command-line options take priority over YAML configuration
+config['access_key_id'] = opts[:aws_key_id] unless opts[:aws_key_id].nil?
+config['secret_access_key'] = opts[:aws_secret_key] unless opts[:aws_secret_key].nil?
+
+# If no AWS access keys have been specified, quit with an error message
+if config['access_key_id'].nil? || config['secret_access_key'].nil?
+    puts <<END
+Specify your AWS credentials on the command-line or in config.yml as follows:
+
+access_key_id: YOUR_ACCESS_KEY_ID
+secret_access_key: YOUR_SECRET_ACCESS_KEY
+
+END
+    exit 1
+end
+
 # Configure Amazon Web Services
 AWS.config(config)
 
@@ -66,6 +58,7 @@ s3 = AWS::S3.new
 bucket = s3.buckets[opts[:bucket]]
 
 # Print local file info
+
 file = S3File.new(opts[:file], "r")
 puts <<FILE_INFO
 --------------------------------------------------------------------------------
