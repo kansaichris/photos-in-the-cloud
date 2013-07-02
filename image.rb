@@ -47,13 +47,18 @@ class Image
         @object = bucket.objects[s3_path]
 
         if @object.exists?
-            puts "#{path} already exists at #{@object.public_url}."
+            yield size if block_given?
         else
-            puts "Uploading #{path} to #{@object.public_url}..."
-            @object.write(:file => path,
-                          :content_md5 => md5_hash,
-                          :content_type => mime_type)
-            puts "Done."
+            file = File.new(path, "r")
+            @object.write(:content_md5 => md5_hash,
+                          :content_type => mime_type,
+                          :content_length => size) do |buffer,bytes|
+                remaining = file.size - file.pos
+                length = (remaining < bytes) ? remaining : bytes
+                buffer.write(file.read(bytes))
+                yield length if block_given?
+            end
+            file.close
         end
     end
 

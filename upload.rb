@@ -8,6 +8,9 @@ require_relative 'image'
 require 'rubygems'
 require 'yaml'
 require 'aws-sdk'
+require 'ruby-progressbar'
+require 'thread'
+
 
 ################################################################################
 # Process YAML and command-line options
@@ -61,32 +64,20 @@ s3 = AWS::S3.new
 # Get a reference to the specified bucket
 bucket = s3.buckets[opts[:bucket]]
 
-if opts[:file]
-    # Print local file info
-    image = Image.new(opts[:file])
-    puts <<-FILE_INFO
---------------------------------------------------------------------------------
-DEBUG: The file's MIME type is #{image.mime_type}
-DEBUG: The file's MD5 hash is #{image.md5_hash}
-DEBUG: The file's SHA-1 hash is #{image.sha1_hash}
---------------------------------------------------------------------------------
+threads = []
+queue = Queue.new
 
-    FILE_INFO
+if opts[:file]
+    puts "Files to upload: 1"
+    puts "   1: #{opts[:file]}"
+    image = Image.new(opts[:file])
+    count = 1
+    bytes = image.size
 
     # Upload the specified file
-    image.upload_to(bucket)
-
-    # Print remote file info
-    info = image.head.map { |key, value| "DEBUG: #{key} = #{value.inspect}" }
-
-    puts
-    puts "Printing object info..."
-    puts <<-RESPONSE
---------------------------------------------------------------------------------
-#{ info.join("\n") }
---------------------------------------------------------------------------------
-
-    RESPONSE
+    threads << Thread.new do
+        image.upload_to(bucket) { |bytes| queue << bytes }
+    end
 end
 
 if opts[:dir]
@@ -95,16 +86,25 @@ if opts[:dir]
     images = Dir[image_glob]
     puts "Files to upload: #{images.size}"
     count = 1
+    bytes = 0
     format = "%4d: %s\n"
+    # Upload each file
     images.each do |filename|
         printf(format, count, filename)
-        # Upload the specified file
-        puts <<-HR
---------------------------------------------------------------------------------
-        HR
-        image = Image.new(filename)
-        image.upload_to(bucket)
-        puts
         count += 1
+        bytes += File.size(filename)
+        threads << Thread.new do
+            image = Image.new(filename)
+            image.upload_to(bucket) { |bytes| queue << bytes }
+        end
     end
 end
+
+# Progress bar #################################################################
+bar = ProgressBar.create(:starting_at => 0,
+                         :total => bytes,
+                         :format => "%a |%w>%i| (%c of %C bytes sent)")
+
+progress_thread = Thread.new { bar.progress += queue.pop until bar.finished? }
+progress_thread.join
+################################################################################
