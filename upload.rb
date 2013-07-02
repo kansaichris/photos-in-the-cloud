@@ -62,7 +62,6 @@ s3 = AWS::S3.new
 bucket = s3.buckets[opts[:bucket]]
 
 # Print local file info
-
 file = S3File.new(opts[:file], "r")
 puts <<FILE_INFO
 --------------------------------------------------------------------------------
