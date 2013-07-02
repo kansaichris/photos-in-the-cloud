@@ -57,5 +57,9 @@ class Image
         end
     end
 
+    def head
+        @object.head
+    end
+
     attr_reader :path, :size
 end

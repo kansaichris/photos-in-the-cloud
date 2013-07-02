@@ -77,7 +77,7 @@ DEBUG: The file's SHA-1 hash is #{image.sha1_hash}
     image.upload_to(bucket)
 
     # Print remote file info
-    info = object.head.map { |key, value| "DEBUG: #{key} = #{value.inspect}" }
+    info = image.head.map { |key, value| "DEBUG: #{key} = #{value.inspect}" }
 
     puts
     puts "Printing object info..."
