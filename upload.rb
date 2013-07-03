@@ -133,5 +133,10 @@ bar = ProgressBar.create(:starting_at => 0,
 
 # Create a new thread to update the progress bar until all of the files (bytes)
 # have been uploaded
-progress_thread = Thread.new { bar.progress += queue.pop until bar.finished? }
+progress_thread = Thread.new do
+     until bar.finished?
+         sleep 1 if queue.empty?
+         bar.progress += queue.pop
+     end
+end
 progress_thread.join
