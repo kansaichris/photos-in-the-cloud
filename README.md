@@ -37,7 +37,11 @@ I would eventually like to run these tools on a server somewhere for remote acce
 
 I also must admit that I have wanted to learn how to program in Ruby for a long time, and this project seemed like a good excuse to do so.
 
-### 2. What do the version numbers mean?
+### 2. What version of Ruby has this project been tested on?
+
+1.9.3.
+
+### 3. What do this project's version numbers mean?
 
 This project uses [Semantic Versioning][semver]. I encourage you to read the linked specifications to learn more, but I have provided a brief summary below for convenience.
 
