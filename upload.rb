@@ -82,7 +82,7 @@ end
 
 if opts[:dir]
     # Print all image files in the directory to upload
-    image_glob = File.join("**", "*.jpg")
+    image_glob = File.join(opts[:dir], "**", "*.jpg")
     images = Dir[image_glob]
     puts "Files to upload: #{images.size}"
     count = 1
