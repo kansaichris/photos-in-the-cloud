@@ -64,47 +64,74 @@ s3 = AWS::S3.new
 # Get a reference to the specified bucket
 bucket = s3.buckets[opts[:bucket]]
 
+# Create an empty array to hold our threads
 threads = []
+
+# Create a queue for the threads to use to communicate upload progress
 queue = Queue.new
 
+# Upload a single file #########################################################
 if opts[:file]
     puts "Files to upload: 1"
     puts "   1: #{opts[:file]}"
     image = Image.new(opts[:file])
+    # Set the counter for the number of files to upload
     count = 1
+    # Set the counter for the number of bytes to upload
     bytes = image.size
 
-    # Upload the specified file
+    # Create a new thread to upload the specified file
+    # NOTE: This isn't really necessary, but it will probably make further
+    #       refactoring easier because threads are used to recursively upload
+    #       files in a directory.
     threads << Thread.new do
+        # NOTE: upload_to sends data incrementally and yields the number of
+        #       bytes uploaded each time. Those bytes are pushed onto the
+        #       queue for the progress bar to use later
         image.upload_to(bucket) { |bytes| queue << bytes }
     end
 end
 
+# Upload all of the files in a directory #######################################
 if opts[:dir]
+    # TODO: Don't list files that have already been uploaded
     # Print all image files in the directory to upload
+    # Recursively find all of the image files in the specified directory
     image_glob = File.join(opts[:dir], "**", "*.jpg")
     images = Dir[image_glob]
+    # Print the number of files to upload
     puts "Files to upload: #{images.size}"
+    # Set the counter for the number of files to upload (incremented below)
     count = 1
+    # Set the counter for the number of bytes to upload (incremented below)
     bytes = 0
+    # Set the (printf) format to use when printing the filenames below
     format = "%4d: %s\n"
-    # Upload each file
+
     images.each do |filename|
+        # Print the name and number of each file that will be uploaded
         printf(format, count, filename)
+        # Increment the counter for the number of files
         count += 1
+        # Add the file size to the total number of bytes to upload
         bytes += File.size(filename)
+        # Create a new thread to upload the file
         threads << Thread.new do
             image = Image.new(filename)
+            # NOTE: upload_to sends data incrementally and yields the number of
+            #       bytes uploaded each time. Those bytes are pushed onto the
+            #       queue for the progress bar to use later
             image.upload_to(bucket) { |bytes| queue << bytes }
         end
     end
 end
 
-# Progress bar #################################################################
+# Create a new progress bar
 bar = ProgressBar.create(:starting_at => 0,
                          :total => bytes,
                          :format => "%a |%w>%i| (%c of %C bytes sent)")
 
+# Create a new thread to update the progress bar until all of the files (bytes)
+# have been uploaded
 progress_thread = Thread.new { bar.progress += queue.pop until bar.finished? }
 progress_thread.join
-################################################################################
