@@ -108,8 +108,17 @@ if opts[:dir]
     # Set the (printf) format to use when printing the filenames below
     # TODO: Abbreviate filenames longer than 50 characters
     upload_format = "%4d: %-50s (%d bytes)\n"
+    uploaded_format = "%4d: %-50s (already uploaded)\n"
 
     images.each do |filename|
+        image = Image.new(filename)
+
+        if image.exists_in?(bucket)
+            printf(uploaded_format, count, File.basename(filename))
+            count += 1
+            next
+        end
+
         # Print the name and number of each file that will be uploaded
         printf(upload_format, count, File.basename(filename), image.size)
         # Increment the counter for the number of files
