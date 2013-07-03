@@ -100,17 +100,18 @@ if opts[:dir]
     image_glob = File.join(File.expand_path(opts[:dir]), "**", "*.{jpg,JPG}")
     images = Dir[image_glob]
     # Print the number of files to upload
-    puts "Files to upload: #{images.size}"
+    puts "#{images.size} image files found"
     # Set the counter for the number of files to upload (incremented below)
     count = 1
     # Set the counter for the number of bytes to upload (incremented below)
     bytes = 0
     # Set the (printf) format to use when printing the filenames below
-    format = "%4d: %s\n"
+    # TODO: Abbreviate filenames longer than 50 characters
+    upload_format = "%4d: %-50s (%d bytes)\n"
 
     images.each do |filename|
         # Print the name and number of each file that will be uploaded
-        printf(format, count, filename)
+        printf(upload_format, count, File.basename(filename), image.size)
         # Increment the counter for the number of files
         count += 1
         # Add the file size to the total number of bytes to upload
