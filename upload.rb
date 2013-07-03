@@ -94,8 +94,6 @@ end
 
 # Upload all of the files in a directory #######################################
 if opts[:dir]
-    # TODO: Don't list files that have already been uploaded
-    # Print all image files in the directory to upload
     # Recursively find all of the image files in the specified directory
     image_glob = File.join(File.expand_path(opts[:dir]), "**", "*.{jpg,JPG}")
     images = Dir[image_glob]
