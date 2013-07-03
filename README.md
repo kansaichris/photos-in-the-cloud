@@ -20,6 +20,8 @@ I haven't found a program or service with all of these features, so I decided to
 ## Current Features (version 0.5.0)
 
 - Upload individual photos named with SHA-1 hashes (like Git)
+- Recursively upload all photos in a directory
+- Display a progress meter during uploads
 
 ## Planned Features
 

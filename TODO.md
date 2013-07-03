@@ -2,7 +2,6 @@
 
 ## Basic Operations
 
-- Recursively upload all photos in a directory
 - Download photos by size, date, and metadata
 - Sync "smart directories"
 - Automatically generate thumbnails
@@ -30,10 +29,6 @@
 - Comment on photos
 - Download photo metadata
 - Index photo metadata
-
-## Command-Line Interface
-
-- Display an (optional) progress meter during uploads
 
 ## Web Interface
 
