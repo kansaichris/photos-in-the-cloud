@@ -43,6 +43,12 @@ class Image
         @s3_path ||= s3_prefix + "/" + sha1_hash[0..1] + "/" + sha1_hash[2..-1]
     end
 
+    def exists_in? bucket
+        # TODO: Make sure that MD5 hashes match
+        object = bucket.objects[s3_path]
+        object.exists?
+    end
+
     def upload_to bucket
         @object = bucket.objects[s3_path]
 
