@@ -4,6 +4,7 @@
 
 require_relative 'options'
 require_relative 'image'
+require_relative 'utility'
 
 require 'rubygems'
 require 'yaml'
@@ -104,7 +105,6 @@ if opts[:dir]
     # Set the counter for the number of bytes to upload (incremented below)
     bytes = 0
     # Set the (printf) format to use when printing the filenames below
-    # TODO: Abbreviate filenames longer than 50 characters
     upload_format = "%4d: %-50s (%d bytes)\n"
     uploaded_format = "%4d: %-50s (already uploaded)\n"
 
@@ -112,13 +112,13 @@ if opts[:dir]
         image = Image.new(filename)
 
         if image.exists_in?(bucket)
-            printf(uploaded_format, count, File.basename(filename))
+            printf(uploaded_format, count, truncate(File.basename(filename), 50))
             count += 1
             next
         end
 
         # Print the name and number of each file that will be uploaded
-        printf(upload_format, count, File.basename(filename), image.size)
+        printf(upload_format, count, truncate(File.basename(filename), 50), image.size)
         # Increment the counter for the number of files
         count += 1
         # Add the file size to the total number of bytes to upload

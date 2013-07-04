@@ -18,3 +18,7 @@ def current_time
     # %z - Time zone as hour and minute offset from UTC (e.g. +0900)
     Time.now.strftime("%a, %d %b %Y %H:%M:%S %z")
 end
+
+def truncate(string, length)
+    (string.length > length) ? string[0, length-3] << '...' : string
+end
