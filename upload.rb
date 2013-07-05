@@ -5,6 +5,7 @@
 require_relative 'options'
 require_relative 'image'
 require_relative 'utility'
+require_relative 'worker'
 
 require 'rubygems'
 require 'yaml'
@@ -56,6 +57,15 @@ end
 # MAIN
 ################################################################################
 
+# Set up a job queue
+job_queue = Queue.new
+
+# Spin up five workers
+workers = []
+(1..5).each do
+    workers << Worker.new(job_queue)
+end
+
 # Configure Amazon Web Services
 AWS.config(config)
 
@@ -65,11 +75,8 @@ s3 = AWS::S3.new
 # Get a reference to the specified bucket
 bucket = s3.buckets[opts[:bucket]]
 
-# Create an empty array to hold our threads
-threads = []
-
 # Create a queue for the threads to use to communicate upload progress
-queue = Queue.new
+byte_queue = Queue.new
 
 # Upload a single file #########################################################
 if opts[:file]
@@ -85,11 +92,11 @@ if opts[:file]
     # NOTE: This isn't really necessary, but it will probably make further
     #       refactoring easier because threads are used to recursively upload
     #       files in a directory.
-    threads << Thread.new do
+    job_queue << Proc.new do
         # NOTE: upload_to sends data incrementally and yields the number of
         #       bytes uploaded each time. Those bytes are pushed onto the
         #       queue for the progress bar to use later
-        image.upload_to(bucket) { |bytes| queue << bytes }
+        image.upload_to(bucket) { |bytes| byte_queue << bytes }
     end
 end
 
@@ -124,12 +131,12 @@ if opts[:dir]
         # Add the file size to the total number of bytes to upload
         bytes += File.size(filename)
         # Create a new thread to upload the file
-        threads << Thread.new do
+        job_queue << Proc.new do
             image = Image.new(filename)
             # NOTE: upload_to sends data incrementally and yields the number of
             #       bytes uploaded each time. Those bytes are pushed onto the
             #       queue for the progress bar to use later
-            image.upload_to(bucket) { |bytes| queue << bytes }
+            image.upload_to(bucket) { |bytes| byte_queue << bytes }
         end
     end
 end
@@ -143,8 +150,13 @@ bar = ProgressBar.create(:starting_at => 0,
 # have been uploaded
 progress_thread = Thread.new do
      until bar.finished?
-         sleep 1 if queue.empty?
-         bar.progress += queue.pop
+         sleep 1 if byte_queue.empty?
+         bar.progress += byte_queue.pop
      end
 end
+
+# Shut down each of the workers once the job queue is empty
+sleep 0.1 until job_queue.empty?
+workers.each { |worker| worker.shut_down }
+
 progress_thread.join
