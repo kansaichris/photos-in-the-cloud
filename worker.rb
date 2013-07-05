@@ -12,7 +12,7 @@ class Worker
     # Pull a Proc from a queue and process it
     def poll
         @thread = Thread.new do
-            until done?
+            loop do
                 while @queue.empty?
                     set_idle true
                     sleep 1
