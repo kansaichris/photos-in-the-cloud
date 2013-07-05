@@ -1,15 +1,22 @@
 class Worker
 
     def initialize queue
-        @idle_state = false
-        @exit_state = false
         @queue = queue
+
+        # Set the "idle state" (returned by the idle? method)
+        # and a mutex for accessing it
+        @idle_state = false
         @idle_mutex = Mutex.new
+
+        # Set the "exit state" (returned by the done? method)
+        # and a mutex for accessing it
+        @exit_state = false
         @exit_mutex = Mutex.new
+
         poll
     end
 
-    # Pull a Proc from a queue and process it
+    # Poll a queue for Proc objects to process
     def poll
         @thread = Thread.new do
             loop do
