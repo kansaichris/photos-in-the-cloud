@@ -15,8 +15,8 @@ class Worker
             loop do
                 while @queue.empty?
                     set_idle true
-                    sleep 1
                     exit 0 if done?
+                    sleep 1
                 end
                 set_idle false
                 job = @queue.pop
