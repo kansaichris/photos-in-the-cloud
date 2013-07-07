@@ -16,6 +16,5 @@ PLATFORMS
 
 DEPENDENCIES
   aws-sdk (~> 1.0)
-  nokogiri
   ruby-progressbar
   trollop

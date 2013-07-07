@@ -4,4 +4,3 @@ gem 'aws-sdk', '~> 1.0'
 gem 'ruby-progressbar'
 
 gem 'trollop'
-gem 'nokogiri'
