@@ -5,4 +5,3 @@ gem 'ruby-progressbar'
 
 gem 'trollop'
 gem 'nokogiri'
-gem 'httparty'
