@@ -104,7 +104,7 @@ end
 if opts[:dir]
     # Recursively find all of the image files in the specified directory
     image_glob = File.join(File.expand_path(opts[:dir]), "**", "*.{jpg,JPG}")
-    images = Dir[image_glob]
+    images = Dir[image_glob].map { |filename| Image.new(filename) }
     # Print the number of files to upload
     puts "#{images.size} image files found"
     # Set the counter for the number of files to upload (incremented below)
@@ -115,24 +115,21 @@ if opts[:dir]
     upload_format = "%4d: %-50s (%d bytes)\n"
     uploaded_format = "%4d: %-50s (already uploaded)\n"
 
-    images.each do |filename|
-        image = Image.new(filename)
-
+    images.each do |image|
         if image.exists_in?(bucket)
-            printf(uploaded_format, count, truncate(File.basename(filename), 50))
+            printf(uploaded_format, count, truncate(File.basename(image.path), 50))
             count += 1
             next
         end
 
         # Print the name and number of each file that will be uploaded
-        printf(upload_format, count, truncate(File.basename(filename), 50), image.size)
+        printf(upload_format, count, truncate(File.basename(image.path), 50), image.size)
         # Increment the counter for the number of files
         count += 1
         # Add the file size to the total number of bytes to upload
-        bytes += File.size(filename)
+        bytes += image.size
         # Create a new thread to upload the file
         job_queue << Proc.new do
-            image = Image.new(filename)
             # NOTE: upload_to sends data incrementally and yields the number of
             #       bytes uploaded each time. Those bytes are pushed onto the
             #       queue for the progress bar to use later
