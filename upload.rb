@@ -151,8 +151,9 @@ workers = []
     workers << Worker.new(job_queue)
 end
 
+# Wait for the workers to finish
+progress_thread.join
+
 # Shut down each of the workers once the job queue is empty
 sleep 0.1 until job_queue.empty?
 workers.each { |worker| worker.shut_down }
-
-progress_thread.join
