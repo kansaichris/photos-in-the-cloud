@@ -150,7 +150,6 @@ bar = ProgressBar.create(:starting_at => 0,
 # have been uploaded
 progress_thread = Thread.new do
      until bar.finished?
-         sleep 1 if byte_queue.empty?
          bar.progress += byte_queue.pop
      end
 end
