@@ -60,12 +60,6 @@ end
 # Set up a job queue
 job_queue = Queue.new
 
-# Spin up five workers
-workers = []
-(1..5).each do
-    workers << Worker.new(job_queue)
-end
-
 # Configure Amazon Web Services
 AWS.config(config)
 
@@ -149,6 +143,12 @@ progress_thread = Thread.new do
      until bar.finished?
          bar.progress += byte_queue.pop
      end
+end
+
+# Spin up five workers
+workers = []
+(1..5).each do
+    workers << Worker.new(job_queue)
 end
 
 # Shut down each of the workers once the job queue is empty
