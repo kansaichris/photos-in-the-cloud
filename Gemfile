@@ -6,3 +6,4 @@ gem 'ruby-progressbar'
 gem 'trollop'
 
 gem 'yard'
+gem 'redcarpet'
