@@ -2,3 +2,6 @@
 *.swp
 *.jpg
 config.yml
+
+# Processed data storage for Yardoc
+.yardoc/
