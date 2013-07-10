@@ -27,6 +27,10 @@ I haven't found a program or service with all of these features, so I decided to
 
 See [TODO.md](TODO.md).
 
+## Documentation
+
+- [API](http://chris-frederick.github.io/photos-in-the-cloud/doc/)
+
 ## FAQ
 
 ### 1. Why Ruby?
