@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII" />
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.8.6.2
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div id='filecontents'><h1>Amazon S3 Photo Management Tools</h1>
+
+<ol>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#current-features-version-050">Current Features</a></li>
+<li><a href="#planned-features">Planned Features</a></li>
+<li><a href="#faq">FAQ</a></li>
+</ol>
+
+<h2>Overview</h2>
+
+<p>I started this project as a simple Ruby script to upload files to Amazon Simple Storage Service (S3) because I wanted a transparent way to manage a photo collection backed by cloud storage. There are a number of popular photo-sharing websites on the Internet today, but I&#39;m primarily interested in streamlined photo <em>storage</em> that allows you to</p>
+
+<ul>
+<li>only pay for the resources that you use</li>
+<li>quickly find and download local copies of photos that match a wide variety of criteria</li>
+<li>synchronize local folders with your cloud storage</li>
+<li>eliminate duplicate photos</li>
+<li>easily store and retrieve metadata, including comments</li>
+</ul>
+
+<p>I haven&#39;t found a program or service with all of these features, so I decided to try to write my own. Progress may be slow as this is still just a hobby project for me, but in the meantime I hope that someone else will find it to be useful, either as a tool or as a reference point for learning how to use the Amazon S3 REST API with Ruby.</p>
+
+<h2>Current Features (version 0.5.0)</h2>
+
+<ul>
+<li>Upload individual photos named with SHA-1 hashes (like Git)</li>
+<li>Recursively upload all photos in a directory</li>
+<li>Display a progress meter during uploads</li>
+</ul>
+
+<h2>Planned Features</h2>
+
+<p>See <a href="TODO.md">TODO.md</a>.</p>
+
+<h2>FAQ</h2>
+
+<h3>1. Why Ruby?</h3>
+
+<p>I would eventually like to run these tools on a server somewhere for remote access and sharing purposes. Ruby is a popular language for server-side programs and has a number of robust libraries available for it (such as <a href="http://www.sinatrarb.com/">Sinatra</a>). Ideally you should be able to run these tools on a cloud platform like Heroku, if you so desire.</p>
+
+<p>I also must admit that I have wanted to learn how to program in Ruby for a long time, and this project seemed like a good excuse to do so.</p>
+
+<h3>2. What version of Ruby has this project been tested on?</h3>
+
+<p>1.9.3.</p>
+
+<h3>3. What do this project&#39;s version numbers mean?</h3>
+
+<p>This project uses <a href="http://semver.org/">Semantic Versioning</a>. I encourage you to read the linked specifications to learn more, but I have provided a brief summary below for convenience.</p>
+
+<blockquote>
+<p>Once you identify your public API, you communicate changes to it with specific increments to your version number. Consider a version format of X.Y.Z (Major.Minor.Patch). Bug fixes not affecting the API increment the patch version, backwards compatible API additions/changes increment the minor version, and backwards incompatible API changes increment the major version.</p>
+</blockquote>
+</div></div>
+
+    <div id="footer">
+  Generated on Tue Jul  9 11:57:14 2013 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.6.2 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

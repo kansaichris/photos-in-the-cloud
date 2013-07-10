@@ -1,0 +1,405 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Top Level Namespace
+  
+    &mdash; Documentation by YARD 0.8.6.2
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo;
+    
+    
+    <span class="title">Top Level Namespace</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Top Level Namespace
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+  
+    
+  
+    
+  
+  
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Defined Under Namespace</h2>
+<p class="children">
+  
+    
+  
+    
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Image.html" title="Image (class)">Image</a></span>, <span class='object_link'><a href="Worker.html" title="Worker (class)">Worker</a></span>
+    
+  
+</p>
+
+
+
+
+
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#current_time-instance_method" title="#current_time (instance method)">- (Object) <strong>current_time</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Get the current time in the following format Mon, 01 Jan 2001 00:00:00
++0900.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#process_options-instance_method" title="#process_options (instance method)">- (Object) <strong>process_options</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Get command-line options as a hash object with Trollop
+####################### <a href="http://:file">opts</a> holds the specified
+file, <a href="http://:bucket">opts</a> holds the specified bucket, etc.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#truncate-instance_method" title="#truncate (instance method)">- (Object) <strong>truncate</strong>(string, length) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="current_time-instance_method">
+  
+    - (<tt>Object</tt>) <strong>current_time</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Get the current time in the following format Mon, 01 Jan 2001 00:00:00
++0900</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'utility.rb', line 10</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_current_time'>current_time</span>
+    <span class='comment'># %a - Abbreviated weekday name (e.g. &quot;Mon&quot;)
+</span>    <span class='comment'># %d - Day of the month, zero-padded (01..31)
+</span>    <span class='comment'># %b - Abbreviated month name (e.g. &quot;Jan&quot;)
+</span>    <span class='comment'># %Y - Year with century (can be negative, 4 digits at least)
+</span>    <span class='comment'># %H - Hour of the day, 24-hour clock, zero-padded (00..23)
+</span>    <span class='comment'># %M - Minute of the hour (00..59)
+</span>    <span class='comment'># %S - Second of the minute (00..60)
+</span>    <span class='comment'># %z - Time zone as hour and minute offset from UTC (e.g. +0900)
+</span>    <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span><span class='period'>.</span><span class='id identifier rubyid_strftime'>strftime</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>%a, %d %b %Y %H:%M:%S %z</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="process_options-instance_method">
+  
+    - (<tt>Object</tt>) <strong>process_options</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Get command-line options as a hash object with Trollop
+####################### <a href="http://:file">opts</a> holds the specified
+file, <a href="http://:bucket">opts</a> holds the specified bucket, etc.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'options.rb', line 6</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_process_options'>process_options</span>
+    <span class='id identifier rubyid_parser'>parser</span> <span class='op'>=</span> <span class='const'>Trollop</span><span class='op'>::</span><span class='const'>Parser</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>do</span>
+        <span class='id identifier rubyid_version'>version</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Amazon S3 Photo Uploader 0.5.0 (c) 2013 Christopher Frederick</span><span class='tstring_end'>&quot;</span></span>
+
+        <span class='id identifier rubyid_banner'>banner</span> <span class='heredoc_beg'>&lt;&lt;-EOS</span>
+<span class='tstring_content'>This program uploads a file to an Amazon S3 bucket.
+
+Usage:
+    upload.rb [options]
+
+Options:
+</span><span class='heredoc_end'>        EOS
+</span>
+        <span class='id identifier rubyid_opt'>opt</span> <span class='symbol'>:file</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>File to upload</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+            <span class='symbol'>:type</span> <span class='op'>=&gt;</span> <span class='symbol'>:string</span>
+
+        <span class='id identifier rubyid_opt'>opt</span> <span class='symbol'>:dir</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Directory with files to upload</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+            <span class='symbol'>:type</span> <span class='op'>=&gt;</span> <span class='symbol'>:string</span>
+
+        <span class='id identifier rubyid_opt'>opt</span> <span class='symbol'>:bucket</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Amazon S3 bucket</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+            <span class='symbol'>:type</span> <span class='op'>=&gt;</span> <span class='symbol'>:string</span><span class='comma'>,</span> <span class='symbol'>:required</span> <span class='op'>=&gt;</span> <span class='kw'>true</span>
+
+        <span class='comment'># For more information on Amazon S3 regions, see
+</span>        <span class='comment'># http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region
+</span>        <span class='id identifier rubyid_opt'>opt</span> <span class='symbol'>:region</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Region where the bucket is located. By default, this is 's3' for US Standard. Use 's3-us-west-2' for US West (Oregon), 's3-us-west-1' for US West (Northern California), 's3-eu-west-1' for EU (Ireland), 's3-ap-southeast-1' for Asia Pacific (Singapore), 's3-ap-southeast-2' for Asia Pacific (Sydney), 's3-ap-northeast-1' for Asia Pacific (Tokyo), and 's3-sa-east-1' for South America (Sao Paulo)</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+            <span class='symbol'>:type</span> <span class='op'>=&gt;</span> <span class='symbol'>:string</span><span class='comma'>,</span> <span class='symbol'>:default</span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>s3</span><span class='tstring_end'>'</span></span>
+
+        <span class='id identifier rubyid_opt'>opt</span> <span class='symbol'>:aws_key_id</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Access key ID for Amazon Web Services</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+            <span class='symbol'>:type</span> <span class='op'>=&gt;</span> <span class='symbol'>:string</span>
+
+        <span class='id identifier rubyid_opt'>opt</span> <span class='symbol'>:aws_secret_key</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Secret access key for Amazon Web Services</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+            <span class='symbol'>:type</span> <span class='op'>=&gt;</span> <span class='symbol'>:string</span>
+    <span class='kw'>end</span>
+
+    <span class='const'>Trollop</span><span class='op'>::</span><span class='id identifier rubyid_with_standard_exception_handling'>with_standard_exception_handling</span> <span class='id identifier rubyid_parser'>parser</span> <span class='kw'>do</span>
+        <span class='id identifier rubyid_raise'>raise</span> <span class='const'>Trollop</span><span class='op'>::</span><span class='const'>HelpNeeded</span> <span class='kw'>if</span> <span class='const'>ARGV</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='comment'># show help
+</span>        <span class='id identifier rubyid_parser'>parser</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span> <span class='const'>ARGV</span>
+    <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="truncate-instance_method">
+  
+    - (<tt>Object</tt>) <strong>truncate</strong>(string, length) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+22
+23
+24</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'utility.rb', line 22</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_truncate'>truncate</span><span class='lparen'>(</span><span class='id identifier rubyid_string'>string</span><span class='comma'>,</span> <span class='id identifier rubyid_length'>length</span><span class='rparen'>)</span>
+    <span class='lparen'>(</span><span class='id identifier rubyid_string'>string</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_length'>length</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id identifier rubyid_string'>string</span><span class='lbracket'>[</span><span class='int'>0</span><span class='comma'>,</span> <span class='id identifier rubyid_length'>length</span><span class='op'>-</span><span class='int'>3</span><span class='rbracket'>]</span> <span class='op'>&lt;&lt;</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>...</span><span class='tstring_end'>'</span></span> <span class='op'>:</span> <span class='id identifier rubyid_string'>string</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Tue Jul  9 11:57:15 2013 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.6.2 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>
