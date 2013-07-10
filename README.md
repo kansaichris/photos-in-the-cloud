@@ -29,7 +29,7 @@ See [TODO.md](TODO.md).
 
 ## Documentation
 
-- [API](http://chris-frederick.github.io/photos-in-the-cloud/doc/)
+- [API](http://chris-frederick.github.io/photos-in-the-cloud/doc/_index.html)
 
 ## FAQ
 
