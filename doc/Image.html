@@ -101,8 +101,7 @@
 
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
-    
-<p>An image stored in Amazon S3.</p>
+    <p>An image stored in Amazon S3.</p>
 
 
   </div>
@@ -139,8 +138,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute path.</p>
+    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute path.</p>
 </div></span>
   
 </li>
@@ -168,8 +166,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute size.</p>
+    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute size.</p>
 </div></span>
   
 </li>
@@ -205,8 +202,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns this file's content.</p>
+    <span class="summary_desc"><div class='inline'><p>Returns this file&#39;s content.</p>
 </div></span>
   
 </li>
@@ -229,8 +225,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Determines whether this file already exists in the specified bucket.</p>
+    <span class="summary_desc"><div class='inline'><p>Determines whether this file already exists in the specified bucket.</p>
 </div></span>
   
 </li>
@@ -253,9 +248,8 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Performs a HEAD request against this object and returns an object with
-useful information about the object, including:.</p>
+    <span class="summary_desc"><div class='inline'><p>Performs a HEAD request against this object and returns an object with
+useful information about it.</p>
 </div></span>
   
 </li>
@@ -280,8 +274,7 @@ useful information about the object, including:.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Initializes a new instance of the Image class.</p>
+    <span class="summary_desc"><div class='inline'><p>Initializes a new instance of the Image class.</p>
 </div></span>
   
 </li>
@@ -304,8 +297,7 @@ useful information about the object, including:.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns this file's MD5 hash value as a Base64-encoded string.</p>
+    <span class="summary_desc"><div class='inline'><p>Returns this file&#39;s MD5 hash value as a Base64-encoded string.</p>
 </div></span>
   
 </li>
@@ -328,8 +320,7 @@ useful information about the object, including:.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Opens this file and tries to determine its MIME type by reading its magic
+    <span class="summary_desc"><div class='inline'><p>Opens this file and tries to determine its MIME type by reading its magic
 header.</p>
 </div></span>
   
@@ -353,8 +344,7 @@ header.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns this file's full path in an Amazon S3 bucket.</p>
+    <span class="summary_desc"><div class='inline'><p>Returns this file&#39;s full path in an Amazon S3 bucket.</p>
 </div></span>
   
 </li>
@@ -377,8 +367,7 @@ header.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the path prefix used to store this file in an Amazon S3 bucket.</p>
+    <span class="summary_desc"><div class='inline'><p>Returns the path prefix used to store this file in an Amazon S3 bucket.</p>
 </div></span>
   
 </li>
@@ -401,8 +390,7 @@ header.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Returns this file's SHA-1 hash value as a hex-encoded string.</p>
+    <span class="summary_desc"><div class='inline'><p>Returns this file&#39;s SHA-1 hash value as a hex-encoded string.</p>
 </div></span>
   
 </li>
@@ -425,8 +413,7 @@ header.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Uploads this file to an Amazon S3 bucket unless it already exists.</p>
+    <span class="summary_desc"><div class='inline'><p>Uploads this file to an Amazon S3 bucket unless it already exists.</p>
 </div></span>
   
 </li>
@@ -449,8 +436,7 @@ header.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Initializes a new instance of the Image class</p>
+    <p>Initializes a new instance of the Image class</p>
 
 
   </div>
@@ -469,8 +455,7 @@ header.</p>
       
       
         &mdash;
-        <div class='inline'>
-<p>the path to the image in the local filesystem</p>
+        <div class='inline'><p>the path to the image in the local filesystem</p>
 </div>
       
     </li>
@@ -484,13 +469,13 @@ header.</p>
       <pre class="lines">
 
 
-7
 8
 9
-10</pre>
+10
+11</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'image.rb', line 7</span>
+      <pre class="code"><span class="info file"># File 'image.rb', line 8</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span> <span class='id identifier rubyid_path'>path</span>
     <span class='ivar'>@path</span> <span class='op'>=</span> <span class='id identifier rubyid_path'>path</span>
@@ -519,8 +504,7 @@ header.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Returns the value of attribute path</p>
+    <p>Returns the value of attribute path</p>
 
 
   </div>
@@ -534,12 +518,12 @@ header.</p>
       <pre class="lines">
 
 
-118
-119
-120</pre>
+123
+124
+125</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'image.rb', line 118</span>
+      <pre class="code"><span class="info file"># File 'image.rb', line 123</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_path'>path</span>
   <span class='ivar'>@path</span>
@@ -562,8 +546,7 @@ header.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Returns the value of attribute size</p>
+    <p>Returns the value of attribute size</p>
 
 
   </div>
@@ -577,12 +560,12 @@ header.</p>
       <pre class="lines">
 
 
-118
-119
-120</pre>
+123
+124
+125</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'image.rb', line 118</span>
+      <pre class="code"><span class="info file"># File 'image.rb', line 123</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_size'>size</span>
   <span class='ivar'>@size</span>
@@ -610,8 +593,7 @@ header.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Returns this file's content</p>
+    <p>Returns this file&#39;s content</p>
 
 
   </div>
@@ -625,12 +607,12 @@ header.</p>
       <pre class="lines">
 
 
-21
 22
-23</pre>
+23
+24</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'image.rb', line 21</span>
+      <pre class="code"><span class="info file"># File 'image.rb', line 22</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_content'>content</span>
     <span class='ivar'>@content</span> <span class='op'>||=</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='lparen'>(</span><span class='id identifier rubyid_path'>path</span><span class='comma'>,</span> <span class='id identifier rubyid_size'>size</span><span class='rparen'>)</span>
@@ -651,8 +633,7 @@ header.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Determines whether this file already exists in the specified bucket</p>
+    <p>Determines whether this file already exists in the specified bucket</p>
 
 
   </div>
@@ -671,8 +652,7 @@ header.</p>
       
       
         &mdash;
-        <div class='inline'>
-<p>an Amazon S3 bucket</p>
+        <div class='inline'><p>an Amazon S3 bucket</p>
 </div>
       
     </li>
@@ -699,14 +679,14 @@ header.</p>
       <pre class="lines">
 
 
-71
 72
 73
 74
-75</pre>
+75
+76</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'image.rb', line 71</span>
+      <pre class="code"><span class="info file"># File 'image.rb', line 72</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_exists_in?'>exists_in?</span> <span class='id identifier rubyid_bucket'>bucket</span>
     <span class='comment'># TODO: Make sure that MD5 hashes match
@@ -729,21 +709,18 @@ header.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Performs a HEAD request against this object and returns an object with
-useful information about the object, including:</p>
-<ul><li>
-<p>metadata (hash of user-supplied key-value pairs)</p>
-</li><li>
-<p>content_length (integer, number of bytes)</p>
-</li><li>
-<p>content_type (as sent to S3 when uploading the object)</p>
-</li><li>
-<p>etag (typically the object's MD5)</p>
-</li><li>
-<p>server_side_encryption (the algorithm used to encrypt the object on the
-server side, e.g. :aes256)</p>
-</li></ul>
+    <p>Performs a HEAD request against this object and returns an object with
+useful information about it</p>
+
+<p>This information includes the following.</p>
+
+<ul>
+<li>metadata (hash of user-supplied key-value pairs)</li>
+<li>content_length (integer, number of bytes)</li>
+<li>content_type (as sent to S3 when uploading the object)</li>
+<li>etag (typically the object&#39;s MD5)</li>
+<li>server_side_encryption (the algorithm used to encrypt the object on the server side, e.g. :aes256)</li>
+</ul>
 
 
   </div>
@@ -761,9 +738,8 @@ server side, e.g. :aes256)</p>
       
       
         
-        <div class='inline'>
-<p>a head object response with metadata, content_length, content_type, etag
-and server_side_encryption.</p>
+        <div class='inline'><p>a head object response with metadata, content_length,
+content_type, etag, and server_side_encryption.</p>
 </div>
       
     </li>
@@ -776,12 +752,12 @@ and server_side_encryption.</p>
       <pre class="lines">
 
 
-114
-115
-116</pre>
+119
+120
+121</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'image.rb', line 114</span>
+      <pre class="code"><span class="info file"># File 'image.rb', line 119</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_head'>head</span>
     <span class='ivar'>@object</span><span class='period'>.</span><span class='id identifier rubyid_head'>head</span>
@@ -802,8 +778,7 @@ and server_side_encryption.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Returns this file's MD5 hash value as a Base64-encoded string</p>
+    <p>Returns this file&#39;s MD5 hash value as a Base64-encoded string</p>
 
 
   </div>
@@ -821,8 +796,7 @@ and server_side_encryption.</p>
       
       
         &mdash;
-        <div class='inline'>
-<p>this file’s MD5 hash value as a Base64-encoded string</p>
+        <div class='inline'><p>this file&#39;s MD5 hash value as a Base64-encoded string</p>
 </div>
       
     </li>
@@ -835,12 +809,12 @@ and server_side_encryption.</p>
       <pre class="lines">
 
 
-50
 51
-52</pre>
+52
+53</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'image.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'image.rb', line 51</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_md5_hash'>md5_hash</span>
     <span class='ivar'>@md5_hash</span> <span class='op'>||=</span> <span class='const'>Digest</span><span class='op'>::</span><span class='const'>MD5</span><span class='period'>.</span><span class='id identifier rubyid_base64digest'>base64digest</span> <span class='id identifier rubyid_content'>content</span>
@@ -861,8 +835,7 @@ and server_side_encryption.</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Opens this file and tries to determine its MIME type by reading its magic
+    <p>Opens this file and tries to determine its MIME type by reading its magic
 header</p>
 
 
@@ -881,9 +854,8 @@ header</p>
       
       
         &mdash;
-        <div class='inline'>
-<p>this file’s MIME type if it could be detected or ‘binary/octet-stream’
-otherwise</p>
+        <div class='inline'><p>this file&#39;s MIME type if it could be detected or
+&#39;binary/octet-stream&#39; otherwise</p>
 </div>
       
     </li>
@@ -896,7 +868,6 @@ otherwise</p>
       <pre class="lines">
 
 
-30
 31
 32
 33
@@ -911,10 +882,11 @@ otherwise</p>
 42
 43
 44
-45</pre>
+45
+46</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'image.rb', line 30</span>
+      <pre class="code"><span class="info file"># File 'image.rb', line 31</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_mime_type'>mime_type</span>
     <span class='comment'># I'm currently checking for the following two magic headers:
@@ -948,8 +920,7 @@ otherwise</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Returns this file's full path in an Amazon S3 bucket</p>
+    <p>Returns this file&#39;s full path in an Amazon S3 bucket</p>
 
 
   </div>
@@ -967,8 +938,7 @@ otherwise</p>
       
       
         &mdash;
-        <div class='inline'>
-<p>this file’s full path in an Amazon S3 bucket</p>
+        <div class='inline'><p>this file&#39;s full path in an Amazon S3 bucket</p>
 </div>
       
     </li>
@@ -981,12 +951,12 @@ otherwise</p>
       <pre class="lines">
 
 
-64
 65
-66</pre>
+66
+67</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'image.rb', line 64</span>
+      <pre class="code"><span class="info file"># File 'image.rb', line 65</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_s3_path'>s3_path</span>
     <span class='ivar'>@s3_path</span> <span class='op'>||=</span> <span class='id identifier rubyid_s3_prefix'>s3_prefix</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_sha1_hash'>sha1_hash</span><span class='lbracket'>[</span><span class='int'>0</span><span class='op'>..</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_sha1_hash'>sha1_hash</span><span class='lbracket'>[</span><span class='int'>2</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span>
@@ -1007,8 +977,7 @@ otherwise</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Returns the path prefix used to store this file in an Amazon S3 bucket</p>
+    <p>Returns the path prefix used to store this file in an Amazon S3 bucket</p>
 
 
   </div>
@@ -1026,8 +995,8 @@ otherwise</p>
       
       
         &mdash;
-        <div class='inline'>
-<p>the path prefix used to store this file in an Amazon S3 bucket</p>
+        <div class='inline'><p>the path prefix used to store this file in an Amazon S3
+bucket</p>
 </div>
       
     </li>
@@ -1040,12 +1009,12 @@ otherwise</p>
       <pre class="lines">
 
 
-16
 17
-18</pre>
+18
+19</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'image.rb', line 16</span>
+      <pre class="code"><span class="info file"># File 'image.rb', line 17</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_s3_prefix'>s3_prefix</span>
     <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>objects</span><span class='tstring_end'>&quot;</span></span>
@@ -1066,8 +1035,7 @@ otherwise</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Returns this file's SHA-1 hash value as a hex-encoded string</p>
+    <p>Returns this file&#39;s SHA-1 hash value as a hex-encoded string</p>
 
 
   </div>
@@ -1085,8 +1053,7 @@ otherwise</p>
       
       
         &mdash;
-        <div class='inline'>
-<p>this file’s SHA-1 hash value as a hex-encoded string</p>
+        <div class='inline'><p>this file&#39;s SHA-1 hash value as a hex-encoded string</p>
 </div>
       
     </li>
@@ -1099,12 +1066,12 @@ otherwise</p>
       <pre class="lines">
 
 
-57
 58
-59</pre>
+59
+60</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'image.rb', line 57</span>
+      <pre class="code"><span class="info file"># File 'image.rb', line 58</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_sha1_hash'>sha1_hash</span>
     <span class='ivar'>@sha1_hash</span> <span class='op'>||=</span> <span class='const'>Digest</span><span class='op'>::</span><span class='const'>SHA1</span><span class='period'>.</span><span class='id identifier rubyid_hexdigest'>hexdigest</span> <span class='id identifier rubyid_content'>content</span>
@@ -1125,12 +1092,11 @@ otherwise</p>
   
 </h3><div class="docstring">
   <div class="discussion">
-    
-<p>Uploads this file to an Amazon S3 bucket unless it already exists.</p>
+    <p>Uploads this file to an Amazon S3 bucket unless it already exists.</p>
 
-<p>This method streams the file to Amazon S3 in chunks. If passed a block, the
-method will yield the number of bytes it has uploaded until the transfer is
-complete.</p>
+<p>This method streams the file to Amazon S3 in chunks. If passed a block,
+the method will yield the number of bytes it has uploaded until the
+transfer is complete.</p>
 
 
   </div>
@@ -1149,8 +1115,7 @@ complete.</p>
       
       
         &mdash;
-        <div class='inline'>
-<p>an Amazon S3 bucket</p>
+        <div class='inline'><p>an Amazon S3 bucket</p>
 </div>
       
     </li>
@@ -1170,8 +1135,8 @@ complete.</p>
       
       
         &mdash;
-        <div class='inline'>
-<p>the number of bytes uploaded</p>
+        <div class='inline'><p>the number of bytes in the last chunk that was
+uploaded to Amazon S3</p>
 </div>
       
     </li>
@@ -1184,8 +1149,6 @@ complete.</p>
       <pre class="lines">
 
 
-85
-86
 87
 88
 89
@@ -1201,10 +1164,12 @@ complete.</p>
 99
 100
 101
-102</pre>
+102
+103
+104</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'image.rb', line 85</span>
+      <pre class="code"><span class="info file"># File 'image.rb', line 87</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_upload_to'>upload_to</span> <span class='id identifier rubyid_bucket'>bucket</span>
     <span class='ivar'>@object</span> <span class='op'>=</span> <span class='id identifier rubyid_bucket'>bucket</span><span class='period'>.</span><span class='id identifier rubyid_objects'>objects</span><span class='lbracket'>[</span><span class='id identifier rubyid_s3_path'>s3_path</span><span class='rbracket'>]</span>
@@ -1234,7 +1199,7 @@ complete.</p>
 </div>
 
     <div id="footer">
-  Generated on Tue Jul  9 11:57:15 2013 by
+  Generated on Thu Jul 11 13:44:55 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.6.2 (ruby-1.9.3).
 </div>
