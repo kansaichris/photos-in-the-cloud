@@ -32,6 +32,8 @@ class Worker
                 job.call
             end
         end
+
+        nil
     end
 
     def done?
@@ -41,6 +43,8 @@ class Worker
     def shut_down
         @exit_mutex.synchronize { @exit_state = true }
         @thread.join
+
+        nil
     end
 
     def idle?
@@ -49,6 +53,8 @@ class Worker
 
     def set_idle state
         @idle_mutex.synchronize { @idle_state = state }
+
+        nil
     end
 
 end
