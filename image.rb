@@ -1,3 +1,5 @@
+require 'exifr'
+
 ##
 # An image stored in Amazon S3.
 class Image
@@ -118,6 +120,11 @@ class Image
     #         content_type, etag, and server_side_encryption.
     def head
         @object.head
+    end
+
+    # Lists all of this photo's Exif tags
+    def exif_tags
+        EXIFR::JPEG.new(@path).exif.to_hash
     end
 
     attr_reader :path, :size
