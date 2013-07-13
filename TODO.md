@@ -24,6 +24,7 @@
 
 ## Metadata
 
+- **Convert all Exif tags into Amazon S3 object metadata**
 - Tag photos
 - Rate photos
 - Comment on photos
