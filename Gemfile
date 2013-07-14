@@ -8,4 +8,6 @@ gem 'trollop'
 gem 'yard'
 gem 'redcarpet'
 
+gem 'rubocop'
+
 gem 'exifr'
