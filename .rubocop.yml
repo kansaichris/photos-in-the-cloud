@@ -1,0 +1,13 @@
+# This is the configuration used to check the rubocop source code.
+
+# Avoid methods longer than 30 lines of code
+MethodLength:
+  Max: 30
+
+# Prefer symbols instead of strings as hash keys.
+HashSyntax:
+  Enabled: false
+
+# Prefer ' strings when you don't need string interpolation or special symbols.
+StringLiterals:
+  Enabled: false
