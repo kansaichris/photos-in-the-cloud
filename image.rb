@@ -10,6 +10,10 @@ class Image
     def initialize path
         @path = path
         @size = File.size(path)
+
+        # Get image metadata
+        exif_hash = EXIFR::JPEG.new(@path).to_hash
+        @exif_tags = Hash[exif_hash.map {|key, value| [key.to_s.gsub(/_/, '-'), value]}]
     end
 
     # Returns the path prefix used to store this file in an Amazon S3 bucket
@@ -122,11 +126,5 @@ class Image
         @object.head
     end
 
-    # Lists all of this photo's Exif tags
-    def exif_tags
-        tags = EXIFR::JPEG.new(@path).to_hash
-        exif_tags = Hash[tags.map { |key, value| [key.to_s.gsub(/_/, '-'), value] }]
-    end
-
-    attr_reader :path, :size
+    attr_reader :path, :size, :exif_tags
 end
