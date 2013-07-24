@@ -124,7 +124,7 @@ class Image
 
     # Lists all of this photo's Exif tags
     def exif_tags
-        EXIFR::JPEG.new(@path).exif.to_hash
+        EXIFR::JPEG.new(@path).to_hash
     end
 
     attr_reader :path, :size
