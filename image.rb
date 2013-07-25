@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'exifr'
 
 ##
@@ -7,7 +9,7 @@ class Image
     # Initializes a new instance of the Image class
     #
     # @param path [String] the path to the image in the local filesystem
-    def initialize path
+    def initialize(path)
         @path = path
         @size = File.size(path)
 
@@ -16,7 +18,7 @@ class Image
           # Replace underscores with dashes in the metadata tag name
           key = key.to_s.gsub(/_/, '-')
           # Prefix any Exif tag name with 'exif-'
-          non_exif_tags = ['width', 'height', 'bits', 'comment']
+          non_exif_tags = %w(width, height, bits, comment)
           key.prepend('exif-') unless non_exif_tags.include?(key)
           # Replace EXIFR::TIFF::Orientation tag values
           case value
@@ -104,7 +106,7 @@ class Image
     # Determines whether this file already exists in the specified bucket
     #
     # @param bucket [AWS::S3::Bucket] an Amazon S3 bucket
-    def exists_in? bucket
+    def exists_in?(bucket)
         # TODO: Make sure that MD5 hashes match
         object = bucket.objects[s3_path]
         object.exists?
@@ -119,7 +121,7 @@ class Image
     # @param bucket [AWS::S3::Bucket] an Amazon S3 bucket
     # @yieldparam bytes [Fixnum] the number of bytes in the last chunk that was
     #                            uploaded to Amazon S3
-    def upload_to bucket
+    def upload_to(bucket)
         @object = bucket.objects[s3_path]
 
         if @object.exists?
@@ -129,9 +131,9 @@ class Image
             @object.write(:content_md5 => md5_hash,
                           :content_type => mime_type,
                           :content_length => size,
-                          :metadata => tags) do |buffer,bytes|
+                          :metadata => tags) do |buffer, bytes|
                 remaining = file.size - file.pos
-                length = (remaining < bytes) ? remaining : bytes
+                length = remaining < bytes ? remaining : bytes
                 buffer.write(file.read(bytes))
                 yield length if block_given?
             end
@@ -148,7 +150,8 @@ class Image
     # - content_length (integer, number of bytes)
     # - content_type (as sent to S3 when uploading the object)
     # - etag (typically the object's MD5)
-    # - server_side_encryption (the algorithm used to encrypt the object on the server side, e.g. :aes256)
+    # - server_side_encryption (the algorithm used to encrypt the object on the
+    #   server side, e.g. :aes256)
     #
     # @return a head object response with metadata, content_length,
     #         content_type, etag, and server_side_encryption.
