@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'thread'
 
 ##
@@ -28,7 +30,7 @@ class Worker
     # @param queue [Queue] the queue from which to process jobs
     #
     # @note This method automatically calls {#poll}.
-    def initialize queue
+    def initialize(queue)
         @queue = queue
 
         # Set the "idle state" (returned by the idle? method)
@@ -101,7 +103,7 @@ class Worker
     # @param state [Boolean] the value that will be returned by the
     #                        {#idle?} method
     # @return [nil]
-    def set_idle state
+    def set_idle(state)
         @idle_mutex.synchronize { @idle_state = state }
 
         nil
