@@ -1,4 +1,5 @@
 #!/usr/bin/env rvm 1.9.3 do ruby
+# encoding: UTF-8
 
 # Upload a file to Amazon S3 using its SHA-1 hash as its filename
 
@@ -13,16 +14,15 @@ require 'aws-sdk'
 require 'ruby-progressbar'
 require 'thread'
 
-
-################################################################################
+###############################################################################
 # Process YAML and command-line options
-################################################################################
+###############################################################################
 
 # Read the YAML config file if it exists
 config_file = File.join(File.dirname(__FILE__), "config.yml")
-config = File.exist?(config_file) ? YAML.load(File.read(config_file)) : Hash.new
+config = File.exist?(config_file) ? YAML.load(File.read(config_file)) : {}
 
-# If the YAML config file wasn't formatted correctly, quit with an error message
+# Quit with an error message if the YAML config file wasn't formatted correctly
 unless config.kind_of?(Hash)
   puts <<END
 config.yml is formatted incorrectly.  Please use the following format:
@@ -53,9 +53,9 @@ END
     exit 1
 end
 
-################################################################################
+###############################################################################
 # MAIN
-################################################################################
+###############################################################################
 
 # Set up a job queue
 job_queue = Queue.new
@@ -72,7 +72,7 @@ bucket = s3.buckets[opts[:bucket]]
 # Create a queue for the threads to use to communicate upload progress
 byte_queue = Queue.new
 
-# Upload a single file #########################################################
+# Upload a single file ########################################################
 if opts[:file]
     puts "Files to upload: 1"
     puts "   1: #{opts[:file]}"
@@ -80,13 +80,13 @@ if opts[:file]
     # Set the counter for the number of files to upload
     count = 1
     # Set the counter for the number of bytes to upload
-    bytes = image.size
+    byte_count = image.size
 
     # Create a new thread to upload the specified file
     # NOTE: This isn't really necessary, but it will probably make further
     #       refactoring easier because threads are used to recursively upload
     #       files in a directory.
-    job_queue << Proc.new do
+    job_queue << proc do
         # NOTE: upload_to sends data incrementally and yields the number of
         #       bytes uploaded each time. Those bytes are pushed onto the
         #       queue for the progress bar to use later
@@ -94,7 +94,7 @@ if opts[:file]
     end
 end
 
-# Upload all of the files in a directory #######################################
+# Upload all of the files in a directory ######################################
 if opts[:dir]
     # Recursively find all of the image files in the specified directory
     image_glob = File.join(File.expand_path(opts[:dir]), "**", "*.{jpg,JPG}")
@@ -104,7 +104,7 @@ if opts[:dir]
     # Set the counter for the number of files to upload (incremented below)
     count = 1
     # Set the counter for the number of bytes to upload (incremented below)
-    bytes = 0
+    byte_count = 0
     # Set the (printf) format to use when printing the filenames below
     upload_format = "%4d: %-50s (%d bytes)\n"
     uploaded_format = "%4d: %-50s (already uploaded)\n"
@@ -121,9 +121,9 @@ if opts[:dir]
         # Increment the counter for the number of files
         count += 1
         # Add the file size to the total number of bytes to upload
-        bytes += image.size
+        byte_count += image.size
         # Create a new thread to upload the file
-        job_queue << Proc.new do
+        job_queue << proc do
             # NOTE: upload_to sends data incrementally and yields the number of
             #       bytes uploaded each time. Those bytes are pushed onto the
             #       queue for the progress bar to use later
@@ -134,7 +134,7 @@ end
 
 # Create a new progress bar
 bar = ProgressBar.create(:starting_at => 0,
-                         :total => bytes,
+                         :total => byte_count,
                          :format => "%a |%w>%i| (%c of %C bytes sent)")
 
 # Create a new thread to update the progress bar until all of the files (bytes)
