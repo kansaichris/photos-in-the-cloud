@@ -107,7 +107,8 @@ class Image
             file = File.new(path, "r")
             @object.write(:content_md5 => md5_hash,
                           :content_type => mime_type,
-                          :content_length => size) do |buffer,bytes|
+                          :content_length => size,
+                          :metadata => tags) do |buffer,bytes|
                 remaining = file.size - file.pos
                 length = (remaining < bytes) ? remaining : bytes
                 buffer.write(file.read(bytes))
