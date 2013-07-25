@@ -10,6 +10,39 @@ class Image
     def initialize path
         @path = path
         @size = File.size(path)
+
+        # Get image metadata
+        tag_array = EXIFR::JPEG.new(@path).to_hash.map do |key, value|
+          # Replace underscores with dashes in the metadata tag name
+          key = key.to_s.gsub(/_/, '-')
+          # Prefix any Exif tag name with 'exif-'
+          non_exif_tags = ['width', 'height', 'bits', 'comment']
+          key.prepend('exif-') unless non_exif_tags.include?(key)
+          # Replace EXIFR::TIFF::Orientation tag values
+          case value
+          when EXIFR::TIFF::TopLeftOrientation
+            value = "TopLeft (1)"
+          when EXIFR::TIFF::TopRightOrientation
+            value = "TopRight (2)"
+          when EXIFR::TIFF::BottomRightOrientation
+            value = "BottomRight (3)"
+          when EXIFR::TIFF::BottomLeftOrientation
+            value = "BottomLeft (4)"
+          when EXIFR::TIFF::LeftTopOrientation
+            value = "LeftTop (5)"
+          when EXIFR::TIFF::RightTopOrientation
+            value = "RightTop (6)"
+          when EXIFR::TIFF::RightBottomOrientation
+            value = "RightBottom (7)"
+          when EXIFR::TIFF::LeftBottomOrientation
+            value = "LeftBottom (8)"
+          end
+          # Return the tag and its value
+          [key, value]
+        end
+        @tags = Hash[tag_array]
+        @tags['filename'] = File.basename(@path)
+        @tags['size'] = @size
     end
 
     # Returns the path prefix used to store this file in an Amazon S3 bucket
@@ -95,7 +128,8 @@ class Image
             file = File.new(path, "r")
             @object.write(:content_md5 => md5_hash,
                           :content_type => mime_type,
-                          :content_length => size) do |buffer,bytes|
+                          :content_length => size,
+                          :metadata => tags) do |buffer,bytes|
                 remaining = file.size - file.pos
                 length = (remaining < bytes) ? remaining : bytes
                 buffer.write(file.read(bytes))
@@ -122,10 +156,5 @@ class Image
         @object.head
     end
 
-    # Lists all of this photo's Exif tags
-    def exif_tags
-        EXIFR::JPEG.new(@path).exif.to_hash
-    end
-
-    attr_reader :path, :size
+    attr_reader :path, :size, :tags
 end
