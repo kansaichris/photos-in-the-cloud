@@ -42,6 +42,6 @@ exit 1 unless opts[:file]
 
 image = Image.new(opts[:file])
 
-image.exif_tags.each do |key,value|
+image.tags.each do |key,value|
     puts "#{key} = #{value}"
 end

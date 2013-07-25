@@ -12,16 +12,16 @@ class Image
         @size = File.size(path)
 
         # Get image metadata
-        exif_hash = EXIFR::JPEG.new(@path).to_hash.map do |key, value|
+        tag_array = EXIFR::JPEG.new(@path).to_hash.map do |key, value|
           # Replace underscores with dashes in the metadata tag name
           key = key.to_s.gsub(/_/, '-')
           # Prefix any Exif tag name with 'exif-'
-          non_exif_keys = ['width', 'height', 'bits', 'comment']
-          key.prepend('exif-') unless non_exif_keys.include?(key)
+          non_exif_tags = ['width', 'height', 'bits', 'comment']
+          key.prepend('exif-') unless non_exif_tags.include?(key)
           # Return the tag and its value
           [key, value]
         end
-        @exif_tags = Hash[exif_hash]
+        @tags = Hash[tag_array]
     end
 
     # Returns the path prefix used to store this file in an Amazon S3 bucket
@@ -134,5 +134,5 @@ class Image
         @object.head
     end
 
-    attr_reader :path, :size, :exif_tags
+    attr_reader :path, :size, :tags
 end
