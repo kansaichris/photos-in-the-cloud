@@ -43,14 +43,14 @@ config['secret_access_key'] = opts[:aws_secret_key] unless opts[:aws_secret_key]
 
 # If no AWS access keys have been specified, quit with an error message
 if config['access_key_id'].nil? || config['secret_access_key'].nil?
-    puts <<END
+  puts <<END
 Specify your AWS credentials on the command-line or in config.yml as follows:
 
 access_key_id: YOUR_ACCESS_KEY_ID
 secret_access_key: YOUR_SECRET_ACCESS_KEY
 
 END
-    exit 1
+  exit 1
 end
 
 ###############################################################################
@@ -74,62 +74,62 @@ byte_queue = Queue.new
 
 # Upload a single file ########################################################
 if opts[:file]
-    puts "Files to upload: 1"
-    puts "   1: #{opts[:file]}"
-    image = Image.new(opts[:file])
-    # Set the counter for the number of files to upload
-    count = 1
-    # Set the counter for the number of bytes to upload
-    byte_count = image.size
+  puts "Files to upload: 1"
+  puts "   1: #{opts[:file]}"
+  image = Image.new(opts[:file])
+  # Set the counter for the number of files to upload
+  count = 1
+  # Set the counter for the number of bytes to upload
+  byte_count = image.size
 
-    # Create a new thread to upload the specified file
-    # NOTE: This isn't really necessary, but it will probably make further
-    #       refactoring easier because threads are used to recursively upload
-    #       files in a directory.
-    job_queue << proc do
-        # NOTE: upload_to sends data incrementally and yields the number of
-        #       bytes uploaded each time. Those bytes are pushed onto the
-        #       queue for the progress bar to use later
-        image.upload_to(bucket) { |bytes| byte_queue << bytes }
-    end
+  # Create a new thread to upload the specified file
+  # NOTE: This isn't really necessary, but it will probably make further
+  #       refactoring easier because threads are used to recursively upload
+  #       files in a directory.
+  job_queue << proc do
+    # NOTE: upload_to sends data incrementally and yields the number of
+    #       bytes uploaded each time. Those bytes are pushed onto the
+    #       queue for the progress bar to use later
+    image.upload_to(bucket) { |bytes| byte_queue << bytes }
+  end
 end
 
 # Upload all of the files in a directory ######################################
 if opts[:dir]
-    # Recursively find all of the image files in the specified directory
-    image_glob = File.join(File.expand_path(opts[:dir]), "**", "*.{jpg,JPG}")
-    images = Dir[image_glob].map { |filename| Image.new(filename) }
-    # Print the number of files to upload
-    puts "#{images.size} image files found"
-    # Set the counter for the number of files to upload (incremented below)
-    count = 1
-    # Set the counter for the number of bytes to upload (incremented below)
-    byte_count = 0
-    # Set the (printf) format to use when printing the filenames below
-    upload_format = "%4d: %-50s (%d bytes)\n"
-    uploaded_format = "%4d: %-50s (already uploaded)\n"
+  # Recursively find all of the image files in the specified directory
+  image_glob = File.join(File.expand_path(opts[:dir]), "**", "*.{jpg,JPG}")
+  images = Dir[image_glob].map { |filename| Image.new(filename) }
+  # Print the number of files to upload
+  puts "#{images.size} image files found"
+  # Set the counter for the number of files to upload (incremented below)
+  count = 1
+  # Set the counter for the number of bytes to upload (incremented below)
+  byte_count = 0
+  # Set the (printf) format to use when printing the filenames below
+  upload_format = "%4d: %-50s (%d bytes)\n"
+  uploaded_format = "%4d: %-50s (already uploaded)\n"
 
-    images.each do |image|
-        if image.exists_in?(bucket)
-            printf(uploaded_format, count, truncate(File.basename(image.path), 50))
-            count += 1
-            next
-        end
-
-        # Print the name and number of each file that will be uploaded
-        printf(upload_format, count, truncate(File.basename(image.path), 50), image.size)
-        # Increment the counter for the number of files
-        count += 1
-        # Add the file size to the total number of bytes to upload
-        byte_count += image.size
-        # Create a new thread to upload the file
-        job_queue << proc do
-            # NOTE: upload_to sends data incrementally and yields the number of
-            #       bytes uploaded each time. Those bytes are pushed onto the
-            #       queue for the progress bar to use later
-            image.upload_to(bucket) { |bytes| byte_queue << bytes }
-        end
+  images.each do |image|
+    if image.exists_in?(bucket)
+      printf(uploaded_format, count, truncate(File.basename(image.path), 50))
+      count += 1
+      next
     end
+
+    # Print the name and number of each file that will be uploaded
+    printf(upload_format, count, truncate(File.basename(image.path), 50), image.size)
+    # Increment the counter for the number of files
+    count += 1
+    # Add the file size to the total number of bytes to upload
+    byte_count += image.size
+    # Create a new thread to upload the file
+    job_queue << proc do
+      # NOTE: upload_to sends data incrementally and yields the number of
+      #       bytes uploaded each time. Those bytes are pushed onto the
+      #       queue for the progress bar to use later
+      image.upload_to(bucket) { |bytes| byte_queue << bytes }
+    end
+  end
 end
 
 # Create a new progress bar
@@ -140,19 +140,19 @@ bar = ProgressBar.create(:starting_at => 0,
 # Create a new thread to update the progress bar until all of the files (bytes)
 # have been uploaded
 progress_thread = Thread.new do
-     until bar.finished?
-       if byte_queue.empty?
-         bar.refresh
-       else
-         bar.progress += byte_queue.pop
-       end
-     end
+  until bar.finished?
+    if byte_queue.empty?
+      bar.refresh
+    else
+      bar.progress += byte_queue.pop
+    end
+  end
 end
 
 # Spin up five workers
 workers = []
 (1..5).each do
-    workers << Worker.new(job_queue)
+  workers << Worker.new(job_queue)
 end
 
 # Wait for the workers to finish
