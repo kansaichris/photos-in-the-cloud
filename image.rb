@@ -22,6 +22,8 @@ class Image
           [key, value]
         end
         @tags = Hash[tag_array]
+        @tags['filename'] = File.basename(@path)
+        @tags['size'] = @size
     end
 
     # Returns the path prefix used to store this file in an Amazon S3 bucket
