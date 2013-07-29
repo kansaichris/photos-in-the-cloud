@@ -14,6 +14,8 @@ gem 'exifr'
 # Progress bar
 gem 'ruby-progressbar'
 
+gem 'rmagick'
+
 # Documentation
 gem 'yard'
 gem 'redcarpet'

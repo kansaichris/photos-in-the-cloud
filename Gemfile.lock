@@ -20,6 +20,7 @@ GEM
       slop (~> 3.4)
     rainbow (1.1.4)
     redcarpet (2.2.2)
+    rmagick (2.13.2)
     rubocop (0.9.1)
       parser (= 2.0.0.pre1)
       rainbow (>= 1.1.4)
@@ -37,6 +38,7 @@ DEPENDENCIES
   exifr
   pry
   redcarpet
+  rmagick
   rubocop
   ruby-progressbar
   trollop
