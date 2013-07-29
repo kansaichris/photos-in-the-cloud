@@ -65,6 +65,9 @@ image = Image.read(file_path).first
 
 # Generate a thumbnail for each of the specified dimensions
 thumbnail_sizes.each do |width, height|
+  # Of course, don't generate a thumbnail as large as the original image!
+  next if width >= image.columns || height >= image.rows
+
   # Try to resize the image to the specified width and height while
   # maintaining its aspect ratio. The values passed into the block
   # through 'cols' and 'rows' may be slightly different from the
