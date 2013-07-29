@@ -76,8 +76,11 @@ thumbnail_sizes.each do |width, height|
   thumbnail = image.change_geometry("#{width}x#{height}") do |cols, rows, img|
     img.resize(cols, rows)
   end
-  # thumbnail = image.resize_to_fill(width, height)
-  thumbnail.write("thumbnails/#{base_name}-#{thumbnail.columns}x#{thumbnail.rows}#{extension}")
+
+  # Write the file
+  thumbnail.write(<<-NAME.chomp)
+thumbnails/#{base_name}-#{thumbnail.columns}x#{thumbnail.rows}#{extension}
+  NAME
 
   # Force RMagick to free the thumbnail's image memory
   # For more details, see https://github.com/rmagick/rmagick/issues/12
