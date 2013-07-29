@@ -47,14 +47,14 @@ extension = File.extname(file_path)
 base_name = File.basename(file_path, extension)
 
 thumbnail_sizes = [
-  [100, 100],
-  [150, 150],
-  [400, 300],
-  [600, 450],
-  [800, 600],
-  [1024, 768],
-  [1280, 960],
-  [1600, 1200]
+  [100, 100],   # Tiny thumbnails
+  [150, 150],   # Large thumbnails
+  [400, 300],   # Small images
+  [600, 450],   # Medium images
+  [800, 600],   # Large images
+  [1024, 768],  # Extra (X)-large images
+  [1280, 960],  # X2-large images
+  [1600, 1200]  # X3-large iages
 ]
 
 Dir.mkdir("thumbnails") unless Dir.exists?("thumbnails")
