@@ -1,4 +1,4 @@
-#!/usr/bin/env rvm 1.9.3 do ruby
+#!/usr/bin/env ruby
 # encoding: UTF-8
 
 # Upload a file to Amazon S3 using its SHA-1 hash as its filename

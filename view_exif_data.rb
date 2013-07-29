@@ -1,4 +1,4 @@
-#!/usr/bin/env rvm 1.9.3 do ruby
+#!/usr/bin/env ruby
 
 require_relative 'image'
 
