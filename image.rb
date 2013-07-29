@@ -1,6 +1,7 @@
 # encoding: UTF-8
 
 require 'exifr'
+require 'pry'
 
 ##
 # An image stored in Amazon S3.
