@@ -1,5 +1,7 @@
 # Amazon S3 Photo Management Tools
 
+[![Code Climate](https://codeclimate.com/github/chris-frederick/photos-in-the-cloud.png)](https://codeclimate.com/github/chris-frederick/photos-in-the-cloud)
+
 1. [Overview](#overview)
 2. [Current Features](#current-features-version-050)
 3. [Planned Features](#planned-features)
