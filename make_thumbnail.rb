@@ -40,8 +40,6 @@ opts = process_options
 # MAIN
 ###############################################################################
 
-exit 1 unless opts[:file]
-
 file_path = opts[:file]
 extension = File.extname(file_path)
 base_name = File.basename(file_path, extension)
