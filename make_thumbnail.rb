@@ -10,27 +10,27 @@ include Magick
 ################################################################################
 
 def process_options
-    parser = Trollop::Parser.new do
-        version "Amazon S3 Photo Management Tools 0.5.0 (c) 2013 Christopher Frederick"
+  parser = Trollop::Parser.new do
+    version "Amazon S3 Photo Management Tools 0.5.0 (c) 2013 Christopher Frederick"
 
-        banner <<-EOS
+    banner <<-EOS
 This program makes thumbnails.
 
 Usage:
     make_thumbnail.rb [options]
 
 Options:
-        EOS
+    EOS
 
-        opt :file, "Original photo",
-            :type => :string, :required => true
+    opt :file, "Original photo",
+      :type => :string, :required => true
 
-    end
+  end
 
-    Trollop::with_standard_exception_handling parser do
-        raise Trollop::HelpNeeded if ARGV.empty? # show help
-        parser.parse ARGV
-    end
+  Trollop::with_standard_exception_handling parser do
+    raise Trollop::HelpNeeded if ARGV.empty? # show help
+    parser.parse ARGV
+  end
 end
 
 opts = process_options
