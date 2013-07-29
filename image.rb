@@ -22,24 +22,17 @@ class Image
       non_exif_tags = %w(width, height, bits, comment)
       key.prepend('exif-') unless non_exif_tags.include?(key)
       # Replace EXIFR::TIFF::Orientation tag values
-      case value
-      when EXIFR::TIFF::TopLeftOrientation
-        value = "TopLeft (1)"
-      when EXIFR::TIFF::TopRightOrientation
-        value = "TopRight (2)"
-      when EXIFR::TIFF::BottomRightOrientation
-        value = "BottomRight (3)"
-      when EXIFR::TIFF::BottomLeftOrientation
-        value = "BottomLeft (4)"
-      when EXIFR::TIFF::LeftTopOrientation
-        value = "LeftTop (5)"
-      when EXIFR::TIFF::RightTopOrientation
-        value = "RightTop (6)"
-      when EXIFR::TIFF::RightBottomOrientation
-        value = "RightBottom (7)"
-      when EXIFR::TIFF::LeftBottomOrientation
-        value = "LeftBottom (8)"
-      end
+      orientation_hash = {
+        EXIFR::TIFF::TopLeftOrientation     => "TopLeft (1)",
+        EXIFR::TIFF::TopRightOrientation    => "TopRight (2)",
+        EXIFR::TIFF::BottomRightOrientation => "BottomRight (3)",
+        EXIFR::TIFF::BottomLeftOrientation  => "BottomLeft (4)",
+        EXIFR::TIFF::LeftTopOrientation     => "LeftTop (5)",
+        EXIFR::TIFF::RightTopOrientation    => "RightTop (6)",
+        EXIFR::TIFF::RightBottomOrientation => "RightBottom (7)",
+        EXIFR::TIFF::LeftBottomOrientation  => "LeftBottom (8)"
+      }
+      value = orientation_hash[value] unless orientation_hash[value].nil?
       # Return the tag and its value
       [key, value]
     end
